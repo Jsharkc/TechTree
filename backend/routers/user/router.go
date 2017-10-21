@@ -25,4 +25,7 @@ func init() {
 
 	// Knowledge
 	beego.Router("/knowledge/list", &controllers.KnowledgeController{}, "post:GetKnowledge")
+
+	// User added
+	beego.Router("/add", &controllers.UserAddedController{}, "post:UserAdded")
 }

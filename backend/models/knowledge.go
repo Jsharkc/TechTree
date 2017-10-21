@@ -15,7 +15,7 @@ var KnowledgeService *KnowledgeServiceProvider = &KnowledgeServiceProvider{}
 type Knowledge struct {
 	ID          string `json:"id"       gorm:"column:id"`
 	NID         string `json:"nid"      gorm:"column:nid"       valid:"Required"`
-	Description string `json:"desci"    gorm:"column:desc"      valid:"Required"`
+	Description string `json:"desci"    gorm:"column:desci"      valid:"Required"`
 	Status      int    `json:"status"   gorm:"column:status"`
 }
 

@@ -16,7 +16,7 @@ type UserAdded struct {
 	ID          string `json:"id"       gorm:"column:id"`
 	NID         string `json:"nid"      gorm:"column:nid"       valid:"Required"`
 	UID         string `json:"uid"      gorm:"column:uid"`
-	Description string `json:"desci"    gorm:"column:desc"      valid:"Required"`
+	Description string `json:"desci"    gorm:"column:desci"     valid:"Required"`
 	Status      int    `json:"status"   gorm:"column:status"`
 	Type        int    `json:"type"     gorm:"column:thetype"   valid:"Required"`
 }

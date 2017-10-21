@@ -15,7 +15,7 @@ var QuestionService *QuestionServiceProvider = &QuestionServiceProvider{}
 type Question struct {
 	ID          string `json:"id"       gorm:"column:id"`
 	NID         string `json:"nid"      gorm:"column:nid"       valid:"Required"`
-	Description string `json:"desci"    gorm:"column:desc"      valid:"Required"`
+	Description string `json:"desci"    gorm:"column:desci"      valid:"Required"`
 	TestPath    string `json:"testpath" gorm:"column:testpath"  valid:"Required"`
 	PrepCode    string `json:"prepcode" gorm:"column:prepcode"`
 	Status      int    `json:"status"   gorm:"column:status"`
