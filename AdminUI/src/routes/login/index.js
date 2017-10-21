@@ -7,21 +7,24 @@ import React       from 'react';
 import PropTypes   from 'prop-types';
 import { connect } from 'dva';
 import Styles      from './index.less';
-import Canvas      from './canvas';
-import Register    from './register';
 import {
   Button,
   Form,
   Input,
-  Row,
-  Col,
   Spin
 }                  from 'antd';
 
 const FormItem = Form.Item;
 
-const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndScroll } }) => {
-  const { loginLoading, visible } = login;
+const Login = ({
+  login,
+  dispatch,
+  form: {
+    getFieldDecorator,
+    validateFieldsAndScroll
+  }
+}) => {
+  const { loginLoading } = login;
 
   function handleOk () {
     validateFieldsAndScroll((errors, values) => {
@@ -35,25 +38,9 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
     })
   }
 
-  const RegisterProps = {
-    visible,
-    onCancel () {
-      dispatch({
-        type: 'login/hideModal'
-      })
-    },
-    onRegister (data) {
-      dispatch({
-        type: 'login/register',
-        payload: data
-      })
-    }
-  }
-
   return (
     <div className={Styles.form}>
-      <Canvas />
-      <span style={{color: '#383838', position: 'relative', fontSize: '25px'}}>TechTree</span>
+      <span style={{color: '#383838', position: 'relative', fontSize: '25px'}}>TechTree Admin</span>
       <Spin spinning={loginLoading} size='large'>
         <form>
           <FormItem hasFeedback>
@@ -62,14 +49,14 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
                 rules: [
                   {
                     required: true,
-                    message: '请输入用户名',
+                    message: '请输入账户',
                   }
                 ]
               })(
                 <Input
                   size='large'
                   onPressEnter={handleOk}
-                  placeholder='用户名'
+                  placeholder='账户名'
                 />
               )
             }
@@ -93,29 +80,15 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
               )
             }
           </FormItem>
-          <Row type="flex" justify="space-between">
-            <Col span={11}>
-              <Button
-                type='primary'
-                size='large'
-                onClick={() => dispatch({ type: 'login/showModal' })}
-                loading={loginLoading}>
-                注册
-              </Button>
-            </Col>
-            <Col span={11}>
-              <Button
-                type='primary'
-                size='large'
-                onClick={handleOk}
-                loading={loginLoading}>
-                登录
-              </Button>
-            </Col>
-          </Row>
+          <Button
+            type='primary'
+            size='large'
+            onClick={handleOk}
+            loading={loginLoading}>
+            登录
+          </Button>
         </form>
       </Spin>
-      <Register {...RegisterProps} />
     </div>
   )
 }

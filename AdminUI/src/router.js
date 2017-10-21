@@ -35,14 +35,6 @@ function RouterConfig({ history, app }) {
           cb(null, require('./routes/home/'))
         }, 'home')
       },
-    }, {
-      path: 'node',
-      getComponent (nextState, cb) {
-        require.ensure([], require => {
-          registerModel(app, require('./models/node'))
-          cb(null, require('./routes/node/'))
-        }, 'node')
-      },
     }]
   }];
 

@@ -12,7 +12,6 @@ export default {
 
   state: {
     loginLoading: false,
-    visible: false,
   },
 
   effects: {
@@ -44,19 +43,6 @@ export default {
         }
       }
     },
-
-    * register ({ payload }, { put, call }) {
-      const res = yield call(Register, payload);
-
-      if (!res.status) {
-        message.info('注册成功！');
-        yield put({
-          type: 'hideModal'
-        })
-      } else {
-        message.warn('注册失败');
-      }
-    }
   },
 
   reducers: {
@@ -73,19 +59,5 @@ export default {
         loginLoading: false,
       }
     },
-
-    showModal (state) {
-      return {
-        ...state,
-        visible: true
-      }
-    },
-
-    hideModal (state) {
-      return {
-        ...state,
-        visible: false
-      }
-    }
   }
 }
