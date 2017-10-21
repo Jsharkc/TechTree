@@ -15,9 +15,9 @@ function RouterConfig({ history, app }) {
     component: App,
     getIndexRoute (nextState, cb) {
       require.ensure([], require => {
-        registerModel(app, require('./models/home'))
-        cb(null, { component: require('./routes/home/') })
-      }, 'home')
+        registerModel(app, require('./models/manageUser'))
+        cb(null, { component: require('./routes/manageUser/') })
+      }, 'manageUser')
     },
     childRoutes: [{
       path: 'login',
@@ -28,14 +28,62 @@ function RouterConfig({ history, app }) {
         }, 'login')
       },
     }, {
-      path: 'home',
+      path: 'manageUser',
       getComponent (nextState, cb) {
         require.ensure([], require => {
-          registerModel(app, require('./models/home'))
-          cb(null, require('./routes/home/'))
-        }, 'home')
+          registerModel(app, require('./models/manageUser'))
+          cb(null, require('./routes/manageUser/'))
+        }, 'manageUser')
       },
-    }]
+    }, {
+      path: 'manageNode/submitNode',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageNode'))
+          cb(null, require('./routes/manageNode/submitNode/'))
+        }, 'submitNode')
+      },
+    }, {
+      path: 'manageNode/modifyNode',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageNode'))
+          cb(null, require('./routes/manageNode/modifyNode/'))
+        }, 'modifyNode')
+      },
+    }, {
+      path: 'manageDoc/submitDoc',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageDoc'))
+          cb(null, require('./routes/manageDoc/submitDoc/'))
+        }, 'submitDoc')
+      },
+    }, {
+      path: 'manageDoc/modifyDoc',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageDoc'))
+          cb(null, require('./routes/manageDoc/modifyDoc/'))
+        }, 'modifyDoc')
+      },
+    }, {
+      path: 'manageTest/submitTest',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageTest'))
+          cb(null, require('./routes/manageTest/submitTest/'))
+        }, 'submitTest')
+      },
+    }, {
+      path: 'manageTest/modifyTest',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/manageTest'))
+          cb(null, require('./routes/manageTest/modifyTest/'))
+        }, 'modifyTest')
+      },
+    },]
   }];
 
   return <Router history={history} routes={routes} />
