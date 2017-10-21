@@ -5,3 +5,31 @@
 @transition-ease-out: all 0.3s ease-out;
 @shadow-1: 4px 4px 20px 0 rgba(0, 0, 0, 0.01);
 @shadow-2: 4px 4px 40px 0 rgba(0, 0, 0, 0.05);
+
+:global {
+  .ant-table {
+    .ant-table-thead > tr > th {
+      text-align: center;
+    }
+
+    .ant-table-tbody > tr > td {
+      text-align: center;
+    }
+
+    &.ant-table-small {
+      .ant-table-thead > tr > th {
+        background: #f7f7f7;
+      }
+
+      .ant-table-body > table {
+        padding: 0;
+      }
+    }
+  }
+
+  .ant-table-pagination {
+    float: none!important;
+    display: table;
+    margin: 16px auto !important;
+  }
+}

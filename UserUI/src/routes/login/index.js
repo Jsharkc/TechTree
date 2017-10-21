@@ -53,9 +53,9 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
   return (
     <div className={Styles.form}>
       <Canvas />
-      <span style={{color: '#383838', position: 'relative', fontSize: '25px'}}>TechTree</span>
+      <span className={Styles.title}>TechTree</span>
       <Spin spinning={loginLoading} size='large'>
-        <form>
+        <Form className={Styles.Box}>
           <FormItem hasFeedback>
             {
               getFieldDecorator('name', {
@@ -113,7 +113,7 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
               </Button>
             </Col>
           </Row>
-        </form>
+        </Form>
       </Spin>
       <Register {...RegisterProps} />
     </div>
