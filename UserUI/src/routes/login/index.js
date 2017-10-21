@@ -26,6 +26,7 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
   function handleOk () {
     validateFieldsAndScroll((errors, values) => {
       if (errors) { return }
+      console.log(values)
 
       dispatch({
         type: 'login/login',
@@ -39,6 +40,12 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
     onCancel () {
       dispatch({
         type: 'login/hideModal'
+      })
+    },
+    onRegister (data) {
+      dispatch({
+        type: 'login/register',
+        payload: data
       })
     }
   }
@@ -69,7 +76,7 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
           </FormItem>
           <FormItem hasFeedback>
             {
-              getFieldDecorator('password', {
+              getFieldDecorator('pass', {
                 rules: [
                   {
                     required: true,

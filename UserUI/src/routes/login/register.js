@@ -20,17 +20,20 @@ const register = (
   {
     visible,
     onCancel,
+    onRegister,
     form: {
       getFieldDecorator,
       validateFieldsAndScroll,
+      resetFields,
     },
   }
 ) => {
   const register = () => {
     validateFieldsAndScroll((errors, values) => {
       if (errors) { return }
-      console.log(values)
-      onCancel()
+
+      resetFields();
+      onRegister(values);
     })
   }
 
@@ -40,6 +43,7 @@ const register = (
     onOk: register,
     onCancel,
     okText: '注册',
+    maskClosable: false,
     wrapClassName: 'vertical-center-modal',
   }
 
@@ -48,33 +52,33 @@ const register = (
       <Form layout="horizontal">
         <FormItem label='账户名' hasFeedback {...formItemLayout}>
           {
-            getFieldDecorator('account', {
+            getFieldDecorator('name', {
               initialValue: '',
               rules: [
                 {
                   required: true,
                   message: '不超过15位，最少一位',
-                  min: 1,
+                  min: 6,
                   max: 15,
                 },
               ],
             })(<Input />)
           }
         </FormItem>
-        <FormItem label='联系电话' hasFeedback {...formItemLayout}>
-          {
-            getFieldDecorator('phone', {
-              initialValue: '',
-              rules: [
-                {
-                  required: true,
-                  message: '请输入手机号',
-                  len: 11
-                },
-              ],
-            })(<Input />)
-          }
-        </FormItem>
+        {/*<FormItem label='联系电话' hasFeedback {...formItemLayout}>*/}
+          {/*{*/}
+            {/*getFieldDecorator('phone', {*/}
+              {/*initialValue: '',*/}
+              {/*rules: [*/}
+                {/*{*/}
+                  {/*required: true,*/}
+                  {/*message: '请输入手机号',*/}
+                  {/*len: 11*/}
+                {/*},*/}
+              {/*],*/}
+            {/*})(<Input />)*/}
+          {/*}*/}
+        {/*</FormItem>*/}
         <FormItem label='密码' hasFeedback {...formItemLayout}>
           {
             getFieldDecorator('pass', {

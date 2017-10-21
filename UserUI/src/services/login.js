@@ -4,7 +4,22 @@
  */
 
 import request from '../utils/request';
+import config  from '../utils/config';
 
-export async function login () {
-  return request('/api/login');
+const { login, register } = config.api.login;
+
+export async function Login (params) {
+  return request({
+    url: login,
+    method: 'post',
+    data: params
+  })
+}
+
+export async function Register (params) {
+  return request({
+    url: register,
+    method: 'post',
+    data: params
+  })
 }

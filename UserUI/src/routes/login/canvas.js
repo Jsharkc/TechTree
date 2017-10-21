@@ -12,7 +12,7 @@ class Canvas extends React.Component {
 
   componentDidMount () {
     var w = c.width = window.innerWidth, h = c.height = window.innerHeight, ctx = c.getContext( '2d' ),
-      minDist = 10, maxDist = 30, initialWidth = 10, maxLines = 100, initialLines = 4, speed = 3,
+      minDist = 10, maxDist = 30, initialWidth = 10, maxLines = 100, initialLines = 4, speed = 5,
 
       lines = [], frame = 0, timeSinceLast = 0,
 
