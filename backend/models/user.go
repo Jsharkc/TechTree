@@ -21,6 +21,18 @@ type User struct {
 	Status   int       `json:"status"`
 }
 
+type UserAddNode struct {
+	ID          string     `json:"id"      gorm:"column:id"    valid:"Required"`
+	PID         string     `json:"pid"     gorm:"column:pid"   valid:"Required"`
+	Title       string     `json:"title"   gorm:"column:title" valid:"Required"`
+	Description string     `json:"desc"    gorm:"column:desc"  valid:"Required"`
+}
+
+type Vote struct {
+	UID         string     `json:"uid"     gorm:"column:uid"   valid:"Required"`
+	NID         string     `json:"nid"     gorm:"column:pid"   valid:"Required"`
+}
+
 func (u User) TableName() string {
 	return "user"
 }

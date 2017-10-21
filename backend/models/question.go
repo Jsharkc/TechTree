@@ -12,3 +12,9 @@ type Question struct {
 	TestPath    string     `json:"testpath" gorm:"column:testpath"  valid:"Required"`
 	PrepCode    string     `json:"prepcode  gorm:"cllumn:"prepcode" valid:"Required"`
 }
+
+type PassedQuestion struct {
+	UID         string     `json:"uid"     gorm:"column:uid"   valid:"Required"`
+	QID         string     `json:"qid"     gorm:"column:qid"   valid:"Required"`
+	NID         string     `json:"nid"     gorm:"column:nid"   valid:"Required"`
+}

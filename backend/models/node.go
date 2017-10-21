@@ -22,6 +22,11 @@ type HandleNode struct {
 	Intro   string     `json:"intro" gorm:"column:intro"`
 }
 
+type PassedNode struct {
+	UID         string     `json:"uid"     gorm:"column:uid"   valid:"Required"`
+	NID         string     `json:"nid"     gorm:"column:pid"   valid:"Required"`
+}
+
 func (u Node) TableName() string {
 	return "node"
 }
