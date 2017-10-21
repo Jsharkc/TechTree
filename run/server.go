@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"net/rpc"
 
@@ -16,7 +15,6 @@ func InitServer() {
 }
 
 func rpcListen() {
-	fmt.Println(GNodeConfig.Addrs)
 	l, err := net.Listen("tcp", GNodeConfig.Addrs)
 	if err != nil {
 		log.Logger.Error("net.Listen(%s, %s) error(%v)"+"tcp"+GNodeConfig.Addrs, err)

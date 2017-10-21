@@ -1,14 +1,58 @@
 package main
 
 import (
+	"os"
+	"os/exec"
+	"strconv"
+	"time"
+
+	"fmt"
 	"github.com/Jsharkc/TechTree/lib/common"
+	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/lib/rpc"
+	"bytes"
 )
 
 type RunRpc struct{}
 
 func (r *RunRpc) Run(args common.Args, reply *string) error {
-	return nil
+	var (
+		out []byte
+		run *exec.Cmd
+		err error
+	)
+
+	timestamp := strconv.FormatInt(time.Now().UnixNano(), 10)
+	filePath := "./file/" + timestamp + ".go"
+	arg := []string{"run", filePath}
+
+	gocode, _ := os.Create(filePath)
+	gocode.WriteString(args.Code)
+	if err := gocode.Close(); nil != err {
+		log.Logger.Error("", err)
+		*reply = ""
+		return err
+	}
+
+	run = exec.Command("go", arg...)
+	out, err = run.CombinedOutput()
+
+	if args.Kind == common.Exexcise {
+		*reply = string(out)
+		return err
+	}
+
+	run = exec.Command("go", "run",args.TestCode+".go")
+	te, err :=run.CombinedOutput()
+	if  err != nil {
+		log.Logger.Error("", err)
+		*reply = ""
+		return err
+	}
+
+	*reply = string(out)
+	fmt.Println(bytes.Compare(out, te) == 0)
+	return err
 }
 
 func (access *RunRpc) Ping(req *rpc.ReqKeepAlive, resp *rpc.RespKeepAlive) error {

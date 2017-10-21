@@ -9,6 +9,8 @@ import (
 	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
+	"github.com/Jsharkc/TechTree/lib/common"
+	"github.com/Jsharkc/TechTree/backend/rpc"
 )
 
 type UserController struct {
@@ -210,6 +212,37 @@ func (uc *UserController) QueryVoteExist() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: true}
 	log.Logger.Info("User add node success!")
+finish:
+	uc.ServeJSON(true)
+}
+
+func (uc *UserController) DoExercise() {
+	var (
+		err  error
+		code string
+		a    common.Args
+		out  string
+	)
+	uid := uc.GetSession(general.SessionUserID).(string)
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &code)
+	if err != nil {
+		log.Logger.Error("user do exercise unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+	a = common.Args{
+		UID:  uid,
+		Kind: common.Exexcise,
+		Code: code,
+	}
+	out, err = rpc.Run(a)
+	if err != nil {
+		log.Logger.Error("user do exercise run err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams, general.RespKeyData: err}
+		goto finish
+	}
+
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: string(out)}
 finish:
 	uc.ServeJSON(true)
 }
