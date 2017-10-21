@@ -38,3 +38,9 @@ func (qu *KnowledgeServiceProvider) AdminAddKnowledge(Know *Knowledge) error {
 func (qu *KnowledgeServiceProvider) DeleteKnowledge(kid string) error {
 	return tidb.Conn.Model(&Knowledge{}).Where("id = ?", kid).Update("status", general.Inactive).Error
 }
+
+func (p *KnowledgeServiceProvider) List() ([]Knowledge, error) {
+	var k []Knowledge
+	err := tidb.Conn.Model(&Knowledge{}).Find(&k).Error
+	return k, err
+}

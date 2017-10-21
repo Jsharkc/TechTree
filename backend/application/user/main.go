@@ -8,6 +8,7 @@ import (
 	_ "github.com/Jsharkc/TechTree/backend/routers/user"
 	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/rpc"
+	"github.com/Jsharkc/TechTree/backend/filters"
 )
 
 func main() {
@@ -24,6 +25,8 @@ func main() {
 	rpc.InitClient()
 
 	go rpc.Clients.Ping("RunRPC.Ping")
+
+	beego.InsertFilter("/*",beego.BeforeRouter, filters.LoginFilter)
 
 	beego.Run()
 }

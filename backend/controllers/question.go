@@ -7,6 +7,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
 	"github.com/Jsharkc/TechTree/lib/log"
+	"github.com/jinzhu/gorm"
 )
 
 type QuestionController struct {
@@ -20,7 +21,7 @@ func (qc *QuestionController) GetQuestion() {
 		flag   bool
 		nid struct{
 			NID string `json:"nid" valid:"Required"`
-			Num int    `json:"num" valid:"Required"`
+			Num int    `json:"" valid:"Required"`
 		}
 	)
 	user := qc.GetSession(general.SessionUserID).(string)
@@ -32,7 +33,7 @@ func (qc *QuestionController) GetQuestion() {
 		goto finish
 	}
 
-	flag, err = utils.GlobalValid.Valid(&nid)
+	flag, err = utils.GlobalValid.Valid(&q)
 	if !flag {
 		for _, err := range utils.GlobalValid.Errors {
 			log.Logger.Error("The question key "+err.Key+" has err:", err)
@@ -117,7 +118,7 @@ finish:
 	qc.ServeJSON(true)
 }
 
-func (qc *QuestionController) AddPassed() {
+func (qc *QuestionController) Update() {
 	var (
 		err  error
 		q    models.PassedQuestion
@@ -150,6 +151,30 @@ func (qc *QuestionController) AddPassed() {
 
 	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("admin add passed question success")
+finish:
+	qc.ServeJSON(true)
+}
+
+func (qc *QuestionController) List() {
+	var (
+		err    error
+		q      []models.Question
+	)
+
+	q, err = models.QuestionService.List()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("Question not found", err)
+			qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrNotFound}
+			goto finish
+		}
+
+		log.Logger.Error("get question err:", err)
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: q}
 finish:
 	qc.ServeJSON(true)
 }

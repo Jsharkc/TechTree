@@ -7,6 +7,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
 	"github.com/Jsharkc/TechTree/lib/log"
+	"github.com/jinzhu/gorm"
 )
 
 type UserAddedController struct {
@@ -97,6 +98,54 @@ func (uac *UserAddedController) UpdateUserAddStatus() {
 	}
 
 	uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
+finish:
+	uac.ServeJSON(true)
+}
+
+func (uac *UserAddedController) ListQues() {
+	var (
+		err    error
+		ua      []models.UserAdded
+	)
+
+	ua, err = models.UserAddedService.ListQues()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("User added question not found", err)
+			uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrNotFound}
+			goto finish
+		}
+
+		log.Logger.Error("List knowledge err:", err)
+		uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ua}
+finish:
+	uac.ServeJSON(true)
+}
+
+func (uac *UserAddedController) ListKnow() {
+	var (
+		err    error
+		ua      []models.UserAdded
+	)
+
+	ua, err = models.UserAddedService.ListKnow()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("User added knowledge not found", err)
+			uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrNotFound}
+			goto finish
+		}
+
+		log.Logger.Error("List knowledge err:", err)
+		uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ua}
 finish:
 	uac.ServeJSON(true)
 }

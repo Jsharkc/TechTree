@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/plugins/cors"
 	"github.com/astaxie/beego"
 	"github.com/Jsharkc/TechTree/backend/tidb"
+	"github.com/Jsharkc/TechTree/backend/filters"
 )
 
 func main() {
@@ -18,6 +19,8 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+
+	beego.InsertFilter("/*",beego.BeforeRouter, filters.LoginFilter)
 
 	tidb.InitSql()
 

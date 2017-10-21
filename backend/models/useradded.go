@@ -36,6 +36,18 @@ func (uas *UserAddedServiceProvider) UserAdded(u *UserAdded) error {
 	return tidb.Conn.Model(&UserAdded{}).Create(u).Error
 }
 
-func (p *UserAddedServiceProvider) Update(id *string, status int) error {
+func (uas *UserAddedServiceProvider) Update(id *string, status int) error {
 	return tidb.Conn.Model(&UserAdded{}).Where("id = ?", *id).Update("status", status).Error
+}
+
+func (uas *UserAddedServiceProvider) ListQues() ([]UserAdded, error) {
+	var ua []UserAdded
+	err := tidb.Conn.Model(&UserAdded{Type: general.AddedTypeQues}).Find(&ua).Error
+	return ua, err
+}
+
+func (uas *UserAddedServiceProvider) ListKnow() ([]UserAdded, error) {
+	var ua []UserAdded
+	err := tidb.Conn.Model(&UserAdded{Type: general.AddedTypeKnow}).Find(&ua).Error
+	return ua, err
 }

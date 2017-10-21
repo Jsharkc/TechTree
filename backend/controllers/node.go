@@ -7,6 +7,7 @@ import (
 	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
+	"github.com/jinzhu/gorm"
 )
 
 type NodeController struct {
@@ -258,6 +259,31 @@ func (nc *NodeController) IsPassed() {
 
 	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ok}
 	log.Logger.Info("Is passed node %b", ok)
+finish:
+	nc.ServeJSON(true)
+}
+
+func (nc *NodeController) AdminListAll() {
+	var (
+		err      error
+		nodes    []models.Node
+	)
+
+	nodes, err = models.NodeService.AdminListAll()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("Node not found", err)
+			nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrNotFound}
+			goto finish
+		}
+
+		log.Logger.Error("List all node mysql err:", err)
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: nodes}
+	log.Logger.Info("List all node success")
 finish:
 	nc.ServeJSON(true)
 }

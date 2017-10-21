@@ -7,6 +7,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
 	"github.com/Jsharkc/TechTree/lib/log"
+	"github.com/jinzhu/gorm"
 )
 
 type KnowledgeController struct {
@@ -112,5 +113,29 @@ func (kc *KnowledgeController) Delete() {
 	kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Delete question success")
 	finish:
+	kc.ServeJSON(true)
+}
+
+func (kc *KnowledgeController) List() {
+	var (
+		err    error
+		k      []models.Knowledge
+	)
+
+	k, err = models.KnowledgeService.List()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("Knowledge not found", err)
+			kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrNotFound}
+			goto finish
+		}
+
+		log.Logger.Error("List knowledge err:", err)
+		kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: k}
+finish:
 	kc.ServeJSON(true)
 }

@@ -126,3 +126,13 @@ func (node *NodeServiceProvider) AddPass(pn *PassNode) error {
 func (node *NodeServiceProvider) DelPass(pn *PassNode) error {
 	return tidb.Conn.Delete(PassNode{}, "uid = ? and nid = ?", pn.UID, pn.NID).Error
 }
+
+func (node *NodeServiceProvider) AdminListAll() ([]Node, error) {
+	var (
+		nodes []Node
+	)
+
+	err := tidb.Conn.Find(&nodes).Error
+
+	return nodes, err
+}

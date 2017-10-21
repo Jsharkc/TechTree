@@ -60,3 +60,9 @@ func (p *QuestionServiceProvider) GetTestPath(qid string) (string,error) {
 	err := tidb.Conn.Model(&Question{}).Where("id = ?").Scan(&q)
 	return q.TestPath, err.Error
 }
+
+func (p *QuestionServiceProvider) List() ([]Question, error) {
+	var q []Question
+	err := tidb.Conn.Model(&Question{}).Find(&q).Error
+	return q, err
+}
