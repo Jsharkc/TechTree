@@ -1,5 +1,10 @@
+/*
+ * Revision History:
+ *     Initial: 2017/10/21        Wang RiYu
+ */
+
 export default {
-  namespace: 'example',
+  namespace: 'home',
 
   state: {},
 
@@ -19,5 +24,4 @@ export default {
       return { ...state, ...action.payload };
     },
   },
-
 };
