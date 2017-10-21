@@ -14,4 +14,6 @@ const (
 	ErrInvalidParams = 0x1
 	ErrMysql       = 0x3
 	ErrNotFound    = 0x4
+
+	SessionUserID = "userid"
 )

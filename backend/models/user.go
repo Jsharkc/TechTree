@@ -14,8 +14,8 @@ type UserServiceProvider struct {
 var UserService *UserServiceProvider = &UserServiceProvider{}
 
 type User struct {
-	UserName string    `json:"name" gorm:"column:name" valid:"Required"`
-	Password string    `json:"pass" gorm:"column:pass" valid:"Required"`
+	UserName string    `json:"name" gorm:"column:name" valid:"Required; MinSize(6);MaxSize(128)"`
+	Password string    `json:"pass" gorm:"column:pass" valid:"Required; MinSize(6);MaxSize(16)"`
 	Created  time.Time `json:"created"`
 	Status   int       `json:"status"`
 }

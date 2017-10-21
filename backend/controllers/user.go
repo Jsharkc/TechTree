@@ -9,6 +9,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/log"
 	"github.com/Jsharkc/TechTree/backend/models"
+	"github.com/Jsharkc/TechTree/backend/utils"
 )
 
 type UserController struct {
@@ -31,15 +32,13 @@ func (uc *UserController) Register() {
 	}
 
 	flag, err = valid.Valid(&register)
-	if err != nil {
-		log.Logger.Error("user valid err:", err)
-		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
-		goto finish
-	}
 	if !flag {
 		for _, err := range valid.Errors {
-			log.Logger.Error("the user key "+ err.Key+ "has err:", err)
+			log.Logger.Error("the user key "+err.Key+" has err:", err)
 		}
+
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
 	}
 
 	err = models.UserService.Register(&register)
@@ -57,9 +56,10 @@ finish:
 
 func (uc *UserController) Login() {
 	var (
-		err    error
-		login  models.User
-		userID string
+		err     error
+		login   models.User
+		userID  string
+		session = utils.GlobalSessions.SessionStart(uc.Ctx.ResponseWriter, uc.Ctx.Request)
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &login)
@@ -82,6 +82,7 @@ func (uc *UserController) Login() {
 		goto finish
 	}
 
+	session.Set(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:", userID)
 finish:
