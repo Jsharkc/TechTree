@@ -13,11 +13,10 @@ type UserAddedController struct {
 	BaseController
 }
 
-
 func (uac *UserAddedController) UserAdded() {
 	var (
 		err  error
-		ua    models.UserAdded
+		ua   models.UserAdded
 		flag bool
 	)
 
@@ -40,7 +39,7 @@ func (uac *UserAddedController) UserAdded() {
 	}
 
 	if ua.Type != general.AddedTypeQues && ua.Type != general.AddedTypeKnow {
-		log.Logger.Error("The add user added has error")
+		log.Logger.Error("The add user added has error", err)
 		uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}
@@ -63,7 +62,7 @@ finish:
 func (uac *UserAddedController) UpdateUserAddStatus() {
 	var (
 		err  error
-		ua    models.UpdateUserAdded
+		ua   models.UpdateUserAdded
 		flag bool
 	)
 
@@ -83,9 +82,9 @@ func (uac *UserAddedController) UpdateUserAddStatus() {
 		uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}
-	
+
 	if ua.Status != general.Agree && ua.Status != general.DisAgree {
-		log.Logger.Error("The update user added has error")
+		log.Logger.Error("The update user added has error", err)
 		uac.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}

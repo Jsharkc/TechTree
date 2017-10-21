@@ -6,9 +6,11 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/Jsharkc/TechTree/backend/general"
-	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/backend/models"
+	"github.com/Jsharkc/TechTree/backend/rpc"
 	"github.com/Jsharkc/TechTree/backend/utils"
+	"github.com/Jsharkc/TechTree/lib/common"
+	"github.com/Jsharkc/TechTree/lib/log"
 )
 
 type UserController struct {
@@ -49,16 +51,16 @@ func (uc *UserController) Register() {
 	uc.SetSession(general.SessionUserID, register.UserName)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", register.UserName)
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
 func (uc *UserController) Login() {
 	var (
-		err     error
-		login   models.User
-		userID  string
-		flag     bool
+		err    error
+		login  models.User
+		userID string
+		flag   bool
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &login)
@@ -94,15 +96,15 @@ func (uc *UserController) Login() {
 	uc.SetSession(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", userID)
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
 func (uc *UserController) AddNode() {
 	var (
-		err      error
-		node     models.UserAddNode
-		flag     bool
+		err  error
+		node models.UserAddNode
+		flag bool
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &node)
@@ -131,15 +133,15 @@ func (uc *UserController) AddNode() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
 func (uc *UserController) Vote() {
 	var (
-		err      error
-		vote     models.Vote
-		flag     bool
+		err  error
+		vote models.Vote
+		flag bool
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &vote)
@@ -168,16 +170,16 @@ func (uc *UserController) Vote() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
 func (uc *UserController) QueryVoteExist() {
 	var (
-		err      error
-		vote     models.Vote
-		flag     bool
-		ok       bool
+		err  error
+		vote models.Vote
+		flag bool
+		ok   bool
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &vote)
@@ -206,6 +208,39 @@ func (uc *UserController) QueryVoteExist() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ok}
 	log.Logger.Info("User vote success!")
-	finish:
+finish:
+	uc.ServeJSON(true)
+}
+
+func (uc *UserController) DoExercise() {
+	var (
+		err  error
+		code string
+		a    common.Args
+		out  string
+	)
+
+	user := uc.GetSession(general.SessionUserID).(string)
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &code)
+	if err != nil {
+		log.Logger.Error("nid unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	a = common.Args{
+		Kind: common.Exexcise,
+		Code: code,
+		UID:  user,
+	}
+
+	out, err = rpc.Run(a)
+	if err != nil {
+		log.Logger.Error("user run code err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
+finish:
 	uc.ServeJSON(true)
 }

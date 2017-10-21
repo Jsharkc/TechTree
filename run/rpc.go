@@ -1,19 +1,23 @@
 package main
 
 import (
+	"bytes"
 	"os"
 	"os/exec"
 	"strconv"
 	"time"
 
-	"fmt"
 	"github.com/Jsharkc/TechTree/lib/common"
 	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/lib/rpc"
-	"bytes"
 )
 
 type RunRpc struct{}
+
+const (
+	Success = "success"
+	Failed  = "failed"
+)
 
 func (r *RunRpc) Run(args common.Args, reply *string) error {
 	var (
@@ -42,16 +46,18 @@ func (r *RunRpc) Run(args common.Args, reply *string) error {
 		return err
 	}
 
-	run = exec.Command("go", "run",args.TestCode+".go")
-	te, err :=run.CombinedOutput()
-	if  err != nil {
+	run = exec.Command("go", "run", args.TestCode+".go")
+	te, err := run.CombinedOutput()
+	if err != nil {
 		log.Logger.Error("", err)
 		*reply = ""
 		return err
 	}
 
-	*reply = string(out)
-	fmt.Println(bytes.Compare(out, te) == 0)
+	*reply = Failed
+	if bytes.Compare(out, te) == 0 {
+		*reply = Success
+	}
 	return err
 }
 
