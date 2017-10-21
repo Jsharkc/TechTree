@@ -99,3 +99,40 @@ func (qc *QuestionController) Delete() {
 finish:
 	qc.ServeJSON(true)
 }
+
+func (qc *QuestionController) Update() {
+	var (
+		err  error
+		q    models.PassedQuestion
+		flag bool
+	)
+
+	err = json.Unmarshal(qc.Ctx.Input.RequestBody, &q)
+	if err != nil {
+		log.Logger.Error("Update question json unmarshal err:", err)
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&q)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The PassedQuestion key "+err.Key+" has err:", err)
+		}
+
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	err = models.QuestionService.AddPassed(&q)
+	if err != nil {
+		log.Logger.Error("Add passed question mysql err:", err)
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
+	log.Logger.Info("Add passed question success")
+finish:
+	qc.ServeJSON(true)
+}
