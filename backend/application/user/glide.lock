@@ -1,5 +1,5 @@
-hash: 27dfe8478d99e953742ead15522c5ebac17a94903b7a98c00119c45a78021fd6
-updated: 2017-10-21T20:03:19.962349+08:00
+hash: 5bffaa4e7482b811fbce94ca8b54f13f41d708e7ae922634beb2e198341725d4
+updated: 2017-10-21T22:20:56.662659+08:00
 imports:
 - name: github.com/astaxie/beego
   version: d96289a81bf67728cff7a19b067aaecc65a62ec6
@@ -25,7 +25,7 @@ imports:
 - name: github.com/jinzhu/inflection
   version: 1c35d901db3da928c72a72d8458480cc9ade058f
 - name: github.com/Jsharkc/TechTree
-  version: d9cb5ea59e30a2203d78fac1cc32bcad742efe53
+  version: aed638d2b55b290eccf367c66368320156f49e40
   subpackages:
   - backend/controllers
   - backend/general
@@ -37,6 +37,8 @@ imports:
   - lib/common
   - lib/log
   - lib/rpc
+- name: github.com/satori/go.uuid
+  version: 879c5887cd475cd7864858769793b2ceb0d44feb
 - name: go.uber.org/atomic
   version: 4e336646b2ef9fc6e47be8e21594178f98e5ebcf
 - name: go.uber.org/multierr
