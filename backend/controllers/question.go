@@ -14,6 +14,7 @@ type QuestionController struct {
 	BaseController
 }
 
+// GetQuestion - user get question
 func (qc *QuestionController) GetQuestion() {
 	var (
 		err    error
@@ -55,6 +56,7 @@ finish:
 	qc.ServeJSON(true)
 }
 
+// AdminAddQuestion - admin add question
 func (qc *QuestionController) AdminAddQuestion() {
 	var (
 		err  error
@@ -92,6 +94,7 @@ finish:
 	qc.ServeJSON(true)
 }
 
+// Delete - admin delete question
 func (qc *QuestionController) Delete() {
 	var (
 		err      error
@@ -118,7 +121,8 @@ finish:
 	qc.ServeJSON(true)
 }
 
-func (qc *QuestionController) Update() {
+// AddPassed - user add passed question
+func (qc *QuestionController) AddPassed() {
 	var (
 		err  error
 		q    models.PassedQuestion
@@ -155,6 +159,7 @@ finish:
 	qc.ServeJSON(true)
 }
 
+// List - list all question for admin
 func (qc *QuestionController) List() {
 	var (
 		err    error

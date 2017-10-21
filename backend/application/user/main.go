@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	//允许CORS
+	// Allow CORS
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowOrigins:     strings.Split(beego.AppConfig.String("cors::hosts"), ","),
 		AllowMethods:     []string{"POST", "GET"},

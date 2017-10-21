@@ -14,6 +14,7 @@ type NodeController struct {
 	BaseController
 }
 
+// Add - admin add node
 func (nc *NodeController) Add() {
 	var (
 		err      error
@@ -51,6 +52,7 @@ finish:
 	nc.ServeJSON(true)
 }
 
+// Delete - admin delete node by node ID
 func (nc *NodeController) Delete() {
 	var (
 		err      error
@@ -88,6 +90,7 @@ finish:
 	nc.ServeJSON(true)
 }
 
+// Update - admin update node content
 func (nc *NodeController) Update() {
 	var (
 		err      error
@@ -125,6 +128,7 @@ finish:
 	nc.ServeJSON(true)
 }
 
+// ListAll - list all node with status for user
 func (nc *NodeController) ListAll() {
 	var (
 		err      error
@@ -151,6 +155,7 @@ func (nc *NodeController) ListAll() {
 	nc.ServeJSON(true)
 }
 
+// AddPass - user add himself passed node
 func (nc *NodeController) AddPass() {
 	var (
 		err      error
@@ -188,6 +193,7 @@ finish:
 	nc.ServeJSON(true)
 }
 
+// DelPass - admin delete user passed node
 func (nc *NodeController) DelPass() {
 	var (
 		err      error
@@ -225,6 +231,7 @@ func (nc *NodeController) DelPass() {
 	nc.ServeJSON(true)
 }
 
+// IsPassed - judge if he pass this node
 func (nc *NodeController) IsPassed() {
 	var (
 		err      error
@@ -263,6 +270,7 @@ finish:
 	nc.ServeJSON(true)
 }
 
+// AdminListAll - list all node for admin
 func (nc *NodeController) AdminListAll() {
 	var (
 		err      error

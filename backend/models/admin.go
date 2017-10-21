@@ -40,11 +40,6 @@ func (as *AdminServiceProvider) Add(a *Admin) error {
 		}
 	}()
 
-	err = tx.Create(&a).Error
-	if err != nil {
-		return err
-	}
-
 	hashcode, err := utils.GenerateHash(a.Password)
 	if err != nil {
 		return err
@@ -53,6 +48,11 @@ func (as *AdminServiceProvider) Add(a *Admin) error {
 	a.Password = string(hashcode)
 	a.Status = general.Active
 	a.Created = time.Now()
+
+	err = tx.Create(&a).Error
+	if err != nil {
+		return err
+	}
 
 	return err
 }

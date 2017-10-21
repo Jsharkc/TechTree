@@ -15,6 +15,7 @@ type AdminController struct {
 	BaseController
 }
 
+// Add - admin login
 func (ac *AdminController) Add() {
 	var (
 		err      error
@@ -53,6 +54,7 @@ finish:
 	ac.ServeJSON(true)
 }
 
+// Login - admin
 func (ac *AdminController) Login() {
 	var (
 		err    error

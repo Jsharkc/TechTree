@@ -14,6 +14,7 @@ type KnowledgeController struct {
 	BaseController
 }
 
+// GetKnowledge - Get knowledge by node ID
 func (kc *KnowledgeController) GetKnowledge() {
 	var (
 		err    error
@@ -53,6 +54,7 @@ finish:
 	kc.ServeJSON(true)
 }
 
+// AdminAddKnowledge - admin add knowledge
 func (kc *KnowledgeController) AdminAddKnowledge() {
 	var (
 		err  error
@@ -90,6 +92,7 @@ func (kc *KnowledgeController) AdminAddKnowledge() {
 	kc.ServeJSON(true)
 }
 
+// Delete - admin delete knowledge by node ID
 func (kc *KnowledgeController) Delete() {
 	var (
 		err      error
@@ -116,6 +119,7 @@ func (kc *KnowledgeController) Delete() {
 	kc.ServeJSON(true)
 }
 
+// List - list all knowledge for admin
 func (kc *KnowledgeController) List() {
 	var (
 		err    error

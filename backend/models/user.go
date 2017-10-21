@@ -67,11 +67,6 @@ func (us *UserServiceProvider) Register(u *User) error {
 		}
 	}()
 
-	err = tx.Create(&u).Error
-	if err != nil {
-		return err
-	}
-
 	hashcode, err := utils.GenerateHash(u.Password)
 	if err != nil {
 		return err
@@ -80,6 +75,11 @@ func (us *UserServiceProvider) Register(u *User) error {
 	u.Password = string(hashcode)
 	u.Status = general.Active
 	u.Created = time.Now()
+
+	err = tx.Create(&u).Error
+	if err != nil {
+		return err
+	}
 
 	return err
 }

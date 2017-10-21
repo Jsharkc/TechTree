@@ -17,6 +17,7 @@ type UserController struct {
 	BaseController
 }
 
+// Register - user register
 func (uc *UserController) Register() {
 	var (
 		err      error
@@ -55,6 +56,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
+// Login - user login
 func (uc *UserController) Login() {
 	var (
 		err    error
@@ -100,6 +102,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
+// AddNode - 
 func (uc *UserController) AddNode() {
 	var (
 		err  error
