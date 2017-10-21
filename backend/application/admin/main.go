@@ -1,8 +1,9 @@
 package main
 
 import (
-	_ "github.com/Jsharkc/TechTree/backend/routers/user"
 	"github.com/astaxie/beego"
+
+	_ "github.com/Jsharkc/TechTree/backend/routers/user"
 )
 
 func main() {

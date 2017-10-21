@@ -1,8 +1,9 @@
 package routers
 
 import (
-	"github.com/Jsharkc/TechTree/backend/controllers"
 	"github.com/astaxie/beego"
+
+	"github.com/Jsharkc/TechTree/backend/controllers"
 )
 
 func init() {
