@@ -12,8 +12,13 @@ const (
 
 	ErrSucceed       = 0x0
 	ErrInvalidParams = 0x1
-	ErrMysql       = 0x3
-	ErrNotFound    = 0x4
+	ErrMysql         = 0x3
+	ErrNotFound      = 0x4
+
+	NodeNoActive = 0x10
+	NodeActive   = 0x11
+	NodePassed   = 0x12
+	NoseUserAdd  = 0x13
 
 	SessionUserID = "userid"
 )
