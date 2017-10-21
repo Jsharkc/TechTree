@@ -48,7 +48,7 @@ func (node *NodeServiceProvider) Delete(nodeID string) error {
 }
 
 func (node *NodeServiceProvider) Update(un *HandleNode) error {
-	return tidb.Conn.Model(&Node{}).Update(Node{Title: un.Title, Intro: un.Intro}).Error
+	return tidb.Conn.Model(&Node{ID: un.ID}).Update(Node{Title: un.Title, Intro: un.Intro}).Error
 }
 
 func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
@@ -93,7 +93,7 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 				PID: node.PID,
 				Title: node.Title,
 				Intro: node.Description,
-				Status: general.NoseUserAdd,
+				Status: general.NodeUserAdd,
 			}
 
 			nodes = append(nodes, newNode)

@@ -17,10 +17,10 @@ const (
 	ErrNotFound      = 0x4
 
 	NodePassed   = 0x12
-	NoseUserAdd  = 0x13
+	NodeUserAdd  = 0x13
 
 	Agree = 0x20
-	Disagree = 0x21
+	DisAgree = 0x21
 
 	SessionUserID = "userid"
 )

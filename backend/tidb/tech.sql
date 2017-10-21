@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS `useraddnode` (
   `title`   varchar(256) NOT NULL,
   `desci`   varchar(1024) NOT NULL,
   `agree`   int(11) NOT NULL,
-  `total`   int(11) NOT NULL
+  `total`   int(11) NOT NULL,
+  `status`  int(11) NOT NULL
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------------------------------------

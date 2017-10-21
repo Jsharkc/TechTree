@@ -22,12 +22,13 @@ type User struct {
 }
 
 type UserAddNode struct {
-	ID          string `json:"id"      gorm:"column:id"    valid:"Required"`
-	PID         string `json:"pid"     gorm:"column:pid"   valid:"Required"`
-	Title       string `json:"title"   gorm:"column:title" valid:"Required"`
-	Description string `json:"desc"    gorm:"column:desc"  valid:"Required"`
-	Agree       int    `json:"agree"   gorm:"column:agree"  valid:"Required"`
-	Total       int    `json:"total"   gorm:"column:total"  valid:"Required"`
+	ID          string `json:"id"      gorm:"column:id"`
+	PID         string `json:"pid"     gorm:"column:pid"    valid:"Required"`
+	Title       string `json:"title"   gorm:"column:title"  valid:"Required"`
+	Description string `json:"desc"    gorm:"column:desc"   valid:"Required"`
+	Agree       int    `json:"agree"   gorm:"column:agree"`
+	Total       int    `json:"total"   gorm:"column:total"`
+	Status      int    `json:"status"  gorm:"column:status"`
 }
 
 type Vote struct {
