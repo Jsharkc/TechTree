@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"errors"
 
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/tidb"
@@ -31,15 +32,6 @@ func (us *UserServiceProvider) Register(u *User) error {
 		err error
 	)
 
-	hashcode, err := utils.GenerateHash(u.Password)
-	if err != nil {
-		return err
-	}
-
-	u.Password = string(hashcode)
-	u.Status = general.UserActive
-	u.Created = time.Now()
-
 	err = tx.Create(&u).Error
 
 	defer func() {
@@ -49,6 +41,15 @@ func (us *UserServiceProvider) Register(u *User) error {
 			err = tx.Commit().Error
 		}
 	}()
+
+	hashcode, err := utils.GenerateHash(u.Password)
+	if err != nil {
+		return err
+	}
+
+	u.Password = string(hashcode)
+	u.Status = general.UserActive
+	u.Created = time.Now()
 
 	return err
 }
@@ -66,7 +67,7 @@ func (us *UserServiceProvider) Login(name, pass *string) (string, error) {
 	}
 
 	if !utils.CompareHash([]byte(u.Password), *pass) {
-		return "", nil
+		return "", errors.New("Password not right!")
 	}
 
 	return u.UserName, nil

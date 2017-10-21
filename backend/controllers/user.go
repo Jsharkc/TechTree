@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 
-	"github.com/astaxie/beego/validation"
 	"github.com/jinzhu/gorm"
 
 	"github.com/Jsharkc/TechTree/backend/general"
@@ -18,9 +17,9 @@ type UserController struct {
 
 func (uc *UserController) Register() {
 	var (
-		valid    = validation.Validation{}
 		err      error
 		register models.User
+		session = utils.GlobalSessions.SessionStart(uc.Ctx.ResponseWriter, uc.Ctx.Request)
 		flag     bool
 	)
 
@@ -31,9 +30,9 @@ func (uc *UserController) Register() {
 		goto finish
 	}
 
-	flag, err = valid.Valid(&register)
+	flag, err = utils.GlobalValid.Valid(&register)
 	if !flag {
-		for _, err := range valid.Errors {
+		for _, err := range utils.GlobalValid.Errors {
 			log.Logger.Error("the user key "+err.Key+" has err:", err)
 		}
 
@@ -48,8 +47,9 @@ func (uc *UserController) Register() {
 		goto finish
 	}
 
+	session.Set(general.SessionUserID, register.UserName)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
-
+	log.Logger.Info("Login: User ID:%s", register.UserName)
 finish:
 	uc.ServeJSON(true)
 }
@@ -59,12 +59,23 @@ func (uc *UserController) Login() {
 		err     error
 		login   models.User
 		userID  string
+		flag     bool
 		session = utils.GlobalSessions.SessionStart(uc.Ctx.ResponseWriter, uc.Ctx.Request)
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &login)
 	if err != nil {
 		log.Logger.Error("user login json unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&login)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("the user key "+err.Key+" has err:", err)
+		}
+
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}
@@ -84,7 +95,7 @@ func (uc *UserController) Login() {
 
 	session.Set(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
-	log.Logger.Info("Login: User ID:", userID)
+	log.Logger.Info("Login: User ID:%s", userID)
 finish:
 	uc.ServeJSON(true)
 }
