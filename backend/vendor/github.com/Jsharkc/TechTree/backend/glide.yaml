@@ -1,0 +1,26 @@
+package: github.com/Jsharkc/TechTree/backend
+import:
+- package: github.com/astaxie/beego
+  version: v1.9.0
+  subpackages:
+  - validation
+- package: github.com/astaxie/session
+  subpackages:
+  - providers/memory
+- package: github.com/go-sql-driver/mysql
+  version: v1.3
+- package: github.com/jinzhu/gorm
+  version: v1.0
+- package: go.uber.org/zap
+  version: v1.7.1
+- package: golang.org/x/crypto
+  subpackages:
+  - bcrypt
+- package: gopkg.in/mgo.v2
+  subpackages:
+  - bson
+testImport:
+- package: github.com/smartystreets/goconvey
+  version: 1.6.3
+  subpackages:
+  - convey
