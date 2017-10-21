@@ -11,7 +11,7 @@ class TreeGraph extends React.Component {
   }
 
   componentDidMount () {
-    const { source } = this.props;
+    const { source, onRoute } = this.props;
 
     // 配置G6图
     let layoutCfg = {
@@ -34,11 +34,14 @@ class TreeGraph extends React.Component {
     tree.tooltip({
       split: '=>'
     });
-    tree.node().tooltip(obj => obj.route ? [['点击跳转', obj.label]] : '');
+    tree.node().tooltip(obj => obj.route ? [['双击跳转', obj.label]] : '');
     tree.source(source); // 传入数据
     tree.edge().shape('smooth');
-    tree.on('click', function(ev){ // 双击跳转路由
-      console.log(ev.item.get('model'));
+    tree.on('dblclick', function(ev){ // 双击跳转路由
+      let item = ev.item;
+      if(tree.isNode(item) && item.get('model').route){
+        onRoute(item.get('model').route)
+      }
     });
     tree.render();
   }

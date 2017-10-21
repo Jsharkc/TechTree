@@ -3,6 +3,8 @@
  *     Initial: 2017/10/21        Wang RiYu
  */
 
+import { routerRedux } from 'dva/router';
+
 export default {
   namespace: 'home',
 
@@ -76,9 +78,14 @@ export default {
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      yield put({ type: 'save' });
-    },
+    * clickNode ({ payload }, { select, put }) {
+      yield put(routerRedux.push({
+        pathname: '/node',
+        query: {
+          route: payload
+        }
+      }))
+    }
   },
 
   reducers: {

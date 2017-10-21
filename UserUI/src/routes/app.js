@@ -1,17 +1,23 @@
-import React       from 'react';
-import { connect } from 'dva';
-import config      from '../utils/config';
-import Styles      from './app.less';
-import Header      from '../components/Header/index';
-import Footer      from '../components/Footer/index';
+import React           from 'react';
+import { connect }     from 'dva';
+import config          from '../utils/config';
+import Styles          from './app.less';
+import { routerRedux } from 'dva/router'
+import Header          from '../components/Header/index';
+import Footer          from '../components/Footer/index';
 
 function App({ children, location, dispatch, app }) {
   const {
     ModifyVisible,
+    canBack
   } = app;
 
   const headerProps = {
     visible: ModifyVisible,
+    canBack,
+    goBack () {
+      dispatch(routerRedux.goBack());
+    },
     onCancel () {
       dispatch({
         type: 'app/hideModifyModal'

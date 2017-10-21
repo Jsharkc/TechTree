@@ -32,6 +32,7 @@ const Header = ({
   canBack,
   onModifyAccount,
   logout,
+  goBack,
   showModify,
   showAbout,
   form: {
@@ -86,12 +87,13 @@ const Header = ({
   )
 
   return (
-    <div id='top' className={Styles.header}>
+    <div className={Styles.header}>
       {
         canBack
           ? <Icon
               type='arrow-left'
               className={Styles.back}
+              onClick={goBack}
             />
           : <div style={{display: 'flex', alignItems: 'center', padding: '0 16px'}}>
               <RadioGroup defaultValue='quiz'>
@@ -175,11 +177,14 @@ const Header = ({
 
 Header.propTypes = {
   visible: PropTypes.bool,
+  canBack: PropTypes.bool,
   onCancel: PropTypes.func,
   onModifyAccount: PropTypes.func,
   logout: PropTypes.func,
+  goBack: PropTypes.func,
   showModify: PropTypes.func,
   showAbout: PropTypes.func,
+  form: PropTypes.object
 }
 
 export default Form.create()(Header)

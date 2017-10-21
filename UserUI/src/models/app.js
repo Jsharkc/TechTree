@@ -4,11 +4,23 @@ export default {
   namespace: 'app',
 
   state: {
-    ModifyVisible: false
+    ModifyVisible: false,
+    canBack: false,
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
+      history.listen(location => {
+        if (location.pathname !== '/home' && location.pathname !== '/') {
+          dispatch({
+            type: 'setBack'
+          })
+        } else {
+          dispatch({
+            type: 'hideBack'
+          })
+        }
+      })
     },
   },
 
@@ -35,6 +47,20 @@ export default {
         ...state,
         ModifyVisible: false
       }
-    }
+    },
+
+    setBack (state) {
+      return {
+        ...state,
+        canBack: true
+      }
+    },
+
+    hideBack (state) {
+      return {
+        ...state,
+        canBack: false
+      }
+    },
   },
 };
