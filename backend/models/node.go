@@ -38,6 +38,12 @@ func (u PassNode) TableName() string {
 	return "passnode"
 }
 
+func (nsp *NodeServiceProvider) IsPassed(uid string) bool {
+	var p PassNode
+	tidb.Conn.Model(&Node{}).Where("uid = ?", uid).Scan(&p)
+	return !(p.NID == "")
+}
+
 func (node *NodeServiceProvider) Add(n *Node) error {
 	n.Status = general.Inactive
 	return tidb.Conn.Create(n).Error

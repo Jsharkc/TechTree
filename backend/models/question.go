@@ -27,10 +27,11 @@ type PassedQuestion struct {
 	NID string `json:"nid"     gorm:"column:nid"   valid:"Required"`
 }
 
-type QuestionVote struct {
-	UID  string `json:"uid"     gorm:"column:uid"   valid:"Required"`
-	QID  string `json:"qid"     gorm:"column:qid"   valid:"Required"`
-	Kind int    `json:"kind"    gorm:"column:kind"`
+type UserAddQues struct {
+	ID          string `json:"id"       gorm:"column:id"        valid:"Required"`
+	NID         string `json:"nid"      gorm:"column:nid"       valid:"Required"`
+	Description string `json:"desci"    gorm:"column:desc"      valid:"Required"`
+	Status      int    `json:"status"   gorm:"column:status"`
 }
 
 func (u Question) TableName() string {
@@ -39,6 +40,10 @@ func (u Question) TableName() string {
 
 func (pq PassedQuestion) TableName() string {
 	return "passquestion"
+}
+
+func (pq UserAddQues)TableName() string {
+	return "useraddques"
 }
 
 func (qu *QuestionServiceProvider) GetQuestionByUser(user string, num int) ([]Question, error) {
@@ -53,10 +58,20 @@ func (qu *QuestionServiceProvider) AdminAddQuestion(question *Question) error {
 	return tidb.Conn.Model(&Question{}).Create(question).Error
 }
 
+func (qu *QuestionServiceProvider) UserAddQuestion(q *UserAddQues) error {
+	q.ID = uuid.NewV4().String()
+	q.Status = general.Active
+	return tidb.Conn.Model(&UserAddQues{}).Create(q).Error
+}
+
 func (qu *QuestionServiceProvider) DeleteQuestion(qid string) error {
 	return tidb.Conn.Model(&Question{}).Where("id = ?", qid).Update("status", general.Inactive).Error
 }
 
 func (p *QuestionServiceProvider)AddPassed(pq *PassedQuestion) error {
 	return tidb.Conn.Model(&PassedQuestion{}).Create(pq).Error
+}
+
+func (p *QuestionServiceProvider) Update(qid *string) error {
+	return tidb.Conn.Model(&UserAddQues{}).Where("id = ?", *qid).Update("status", general.Inactive).Error
 }
