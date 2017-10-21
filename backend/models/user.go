@@ -91,7 +91,7 @@ func (us *UserServiceProvider) Login(name, pass *string) (string, error) {
 	)
 
 	db := tidb.Conn
-	err = db.Where("name = ?", *name).First(&u).Error
+	err = db.Model(&User{}).Where("name = ?", *name).First(&u).Error
 	if err != nil {
 		return "", err
 	}
