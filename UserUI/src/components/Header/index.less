@@ -18,6 +18,12 @@
   left: 50%;
 }
 
+.radioButton {
+  &:hover {
+    background: #efefef;
+  }
+}
+
 .header {
   :global .ant-menu-horizontal {
     & > .ant-menu-submenu {
@@ -30,26 +36,11 @@
   box-shadow: @shadow-2;
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 48px;
   background-color: #fff;
 
   .rightWarpper {
     display: flex;
-  }
-
-  .button {
-    width: 47px;
-    height: 47px;
-    line-height: 47px;
-    text-align: center;
-    font-size: 18px;
-    cursor: pointer;
-    transition: @transition-ease-in;
-
-    &:hover {
-      color: @primary-color;
-      background-color: fade(@primary-color, 15%);
-    }
   }
 }

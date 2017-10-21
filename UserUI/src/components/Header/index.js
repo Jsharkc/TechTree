@@ -3,27 +3,33 @@
  *     Initial: 2017/10/21        Wang RiYu
  */
 
-import React     from 'react'
-import PropTypes from 'prop-types'
-import Styles    from './index.less'
+import React     from 'react';
+import PropTypes from 'prop-types';
+import Styles    from './index.less';
 import {
   Menu,
   Icon,
   Modal,
   Form,
   Input,
-}                from 'antd'
+  Radio,
+  Dropdown,
+  Button,
+}                from 'antd';
 
-const SubMenu = Menu.SubMenu
-const FormItem = Form.Item
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+const SubMenu = Menu.SubMenu;
+const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 }
-}
+};
 
 const Header = ({
   visible,
   onCancel,
+  canBack,
   onModifyAccount,
   logout,
   showModify,
@@ -53,6 +59,10 @@ const Header = ({
     })
   }
 
+  const onClickAdd = menu => {
+    console.log(menu.key)
+  }
+
   const modalProps = {
     title: '修改账户',
     visible,
@@ -61,8 +71,40 @@ const Header = ({
     wrapClassName: 'vertical-center-modal',
   }
 
+  const menu = (
+    <Menu onClick={onClickAdd}>
+      <Menu.Item key="addNode">
+        <a>添加节点</a>
+      </Menu.Item>
+      <Menu.Item key="addTest">
+        <a>添加考题</a>
+      </Menu.Item>
+      <Menu.Item key="addDoc">
+        <a>添加知识点</a>
+      </Menu.Item>
+    </Menu>
+  )
+
   return (
     <div id='top' className={Styles.header}>
+      {
+        canBack
+          ? <Icon
+              type='arrow-left'
+              className={Styles.back}
+            />
+          : <div style={{display: 'flex', alignItems: 'center', padding: '0 16px'}}>
+              <RadioGroup defaultValue='quiz'>
+                <RadioButton className={Styles.radioButton} value="quiz">闯关</RadioButton>
+                <RadioButton className={Styles.radioButton} value="learn">学习</RadioButton>
+              </RadioGroup>
+              <Dropdown overlay={menu}>
+                <Button style={{ marginLeft: 8 }}>
+                  添加 <Icon type="down" />
+                </Button>
+              </Dropdown>
+            </div>
+      }
       <img src={require('../../assets/logo.png')} height='36px' width='36px' className={Styles.logo} />
       <div className={Styles.rightWarpper}>
         <Menu mode="horizontal" onClick={handleClickMenu}>
