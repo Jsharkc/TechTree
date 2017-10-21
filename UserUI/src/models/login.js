@@ -5,6 +5,7 @@
 
 import { Login, Register } from '../services/login';
 import { message }         from 'antd';
+import { routerRedux }     from 'dva/router';
 
 export default {
   namespace: 'login',
@@ -26,7 +27,6 @@ export default {
         message.warn('登录失败');
       } finally {
         yield put({ type: 'hideLoginLoading' })
-        console.log(res);
         if (!res.status) {
           // setToken(data.resp)
           // yield put({ type: 'app/saveToken', payload: data.resp })
@@ -36,6 +36,7 @@ export default {
           // } else {
           //   yield put(routerRedux.push('/home'))
           // }
+          yield put(routerRedux.push('/home'));
           message.info('登录成功！');
         } else {
           message.warn('登录失败');

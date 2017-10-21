@@ -27,7 +27,15 @@ function RouterConfig({ history, app }) {
           cb(null, require('./routes/login/'))
         }, 'login')
       },
-    }]
+    }, {
+      path: 'home',
+      getComponent (nextState, cb) {
+        require.ensure([], require => {
+          registerModel(app, require('./models/home'))
+          cb(null, require('./routes/home/'))
+        }, 'home')
+      },
+    },]
   }];
 
   return <Router history={history} routes={routes} />

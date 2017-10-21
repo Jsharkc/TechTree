@@ -4,36 +4,37 @@ export default {
   namespace: 'app',
 
   state: {
-    token: ''
+    ModifyVisible: false
   },
 
   subscriptions: {
     setup({ dispatch, history }) {
-      dispatch({ type: 'readToken' })
     },
   },
 
   effects: {
-    * readToken ({ payload }, { put }) {
-      let token = localStorage.getItem('LoginAuthToken');
-
-      if (!token) {
-        yield put(routerRedux.push('/login'))
-      } else {
-        yield put({
-          type: 'handleReadToken',
-          payload: token
-        })
-      }
+    * logout ({ payload }, { put }) {
+      yield put(routerRedux.push('/login'))
     },
+
+    * handleModifyAccount ({ payload }, { call, put }) {
+      console.log(payload);
+    }
   },
 
   reducers: {
-    handleReadToken (state, { payload: token }) {
+    showModifyModal (state) {
       return {
         ...state,
-        token,
+        ModifyVisible: true
       }
     },
+
+    hideModifyModal (state) {
+      return {
+        ...state,
+        ModifyVisible: false
+      }
+    }
   },
 };
