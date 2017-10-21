@@ -37,7 +37,7 @@ func (nc *NodeController) Add() {
 		goto finish
 	}
 
-	err = models.NodeService.Add(&node)
+	err = models.NodeService.AdminAddNode(&node)
 	if err != nil {
 		log.Logger.Error("Add node mysql err:", err)
 		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}

@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/general"
+	"github.com/satori/go.uuid"
 	"github.com/jinzhu/gorm"
 )
 
@@ -44,7 +45,8 @@ func (nsp *NodeServiceProvider) IsPassed(uid string) bool {
 	return !(p.NID == "")
 }
 
-func (node *NodeServiceProvider) Add(n *Node) error {
+func (node *NodeServiceProvider) AdminAddNode(n *Node) error {
+	n.ID = uuid.NewV4().String()
 	n.Status = general.Inactive
 	return tidb.Conn.Create(n).Error
 }

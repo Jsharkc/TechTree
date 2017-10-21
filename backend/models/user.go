@@ -7,6 +7,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/utils"
+	"github.com/satori/go.uuid"
 )
 
 type UserServiceProvider struct {
@@ -100,7 +101,8 @@ func (us *UserServiceProvider) Login(name, pass *string) (string, error) {
 	return u.UserName, nil
 }
 
-func (us *UserServiceProvider) AddNode(n *UserAddNode) error {
+func (us *UserServiceProvider) UserAddNode(n *UserAddNode) error {
+	n.ID = uuid.NewV4().String()
 	n.Status = general.Initial
 	n.Agree  = 0
 	n.Total  = 0

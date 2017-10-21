@@ -122,7 +122,7 @@ func (uc *UserController) AddNode() {
 		goto finish
 	}
 
-	err = models.UserService.AddNode(&node)
+	err = models.UserService.UserAddNode(&node)
 	if err != nil {
 		log.Logger.Error("User add node err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
