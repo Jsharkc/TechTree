@@ -10,6 +10,7 @@ export default {
 
   state: {
     loginLoading: false,
+    visible: false,
   },
 
   effects: {
@@ -17,5 +18,18 @@ export default {
   },
 
   reducers: {
+    showModal (state) {
+      return {
+        ...state,
+        visible: true
+      }
+    },
+
+    hideModal (state) {
+      return {
+        ...state,
+        visible: false
+      }
+    }
   }
 }

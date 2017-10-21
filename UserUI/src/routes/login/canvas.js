@@ -12,16 +12,9 @@ class Canvas extends React.Component {
 
   componentDidMount () {
     var w = c.width = window.innerWidth, h = c.height = window.innerHeight, ctx = c.getContext( '2d' ),
-      minDist = 10,
-      maxDist = 30,
-      initialWidth = 10,
-      maxLines = 100,
-      initialLines = 4,
-      speed = 3,
+      minDist = 10, maxDist = 30, initialWidth = 10, maxLines = 100, initialLines = 4, speed = 3,
 
-      lines = [],
-      frame = 0,
-      timeSinceLast = 0,
+      lines = [], frame = 0, timeSinceLast = 0,
 
       dirs = [
         // straight x, y velocity
@@ -35,8 +28,8 @@ class Canvas extends React.Component {
         [ -.7, .7 ],
         [ -.7, -.7]
       ],
-      starter = { // starting parent line, just a pseudo line
 
+      starter = {
         x: w / 2,
         y: h / 2,
         vx: 0,
@@ -45,50 +38,38 @@ class Canvas extends React.Component {
       };
 
     function init() {
-
       lines.length = 0;
 
       for( var i = 0; i < initialLines; ++i )
         lines.push( new Line( starter ) );
 
-      ctx.fillStyle = '#222';
+      ctx.fillStyle = '#eee';
       ctx.fillRect( 0, 0, w, h );
-
-      // if you want a cookie ;)
-      // ctx.lineCap = 'round';
     }
     function getColor( x ) {
-
       return 'hsl( hue, 80%, 50% )'.replace(
         'hue', x / w * 360 + frame
       );
     }
     function anim() {
-
       window.requestAnimationFrame( anim );
 
       ++frame;
 
       ctx.shadowBlur = 0;
-      ctx.fillStyle = 'rgba(0,0,0,.02)';
+      ctx.fillStyle = 'rgba(220,220,220,.02)';
       ctx.fillRect( 0, 0, w, h );
       ctx.shadowBlur = .5;
 
       for( var i = 0; i < lines.length; ++i )
-
-        if( lines[ i ].step() ) { // if true it's dead
-
+        if( lines[ i ].step() ) {
           lines.splice( i, 1 );
           --i;
-
         }
-
-      // spawn new
 
       ++timeSinceLast
 
       if( lines.length < maxLines && timeSinceLast > 10 && Math.random() < .5 ) {
-
         timeSinceLast = 0;
 
         lines.push( new Line( starter ) );
@@ -102,32 +83,24 @@ class Canvas extends React.Component {
     }
 
     function Line( parent ) {
-
       this.x = parent.x | 0;
       this.y = parent.y | 0;
       this.width = parent.width / 1.25;
 
       do {
-
         var dir = dirs[ ( Math.random() * dirs.length ) |0 ];
         this.vx = dir[ 0 ];
         this.vy = dir[ 1 ];
-
       } while (
         ( this.vx === -parent.vx && this.vy === -parent.vy ) || ( this.vx === parent.vx && this.vy === parent.vy) );
-
       this.vx *= speed;
       this.vy *= speed;
-
       this.dist = ( Math.random() * ( maxDist - minDist ) + minDist );
-
     }
+
     Line.prototype.step = function() {
-
       var dead = false;
-
-      var prevX = this.x,
-        prevY = this.y;
+      var prevX = this.x, prevY = this.y;
 
       this.x += this.vx;
       this.y += this.vy;
@@ -177,7 +150,7 @@ class Canvas extends React.Component {
 
   render () {
     return (
-      <canvas id='c' style={{zIndex: 0, position: 'fixed', top: 0, left: 0, backgroundColor: 'transparent'}}></canvas>
+      <canvas id='c' style={{zIndex: 0, position: 'fixed', top: 0, left: 0, backgroundColor: 'white'}}></canvas>
     )
   }
 }
