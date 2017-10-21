@@ -57,7 +57,6 @@ const register = (
               rules: [
                 {
                   required: true,
-                  message: '不超过15位，最少一位',
                   min: 6,
                   max: 15,
                 },
@@ -86,7 +85,6 @@ const register = (
               rules: [
                 {
                   required: true,
-                  message: '最短6位，最长15位',
                   min: 6,
                   max: 15,
                 },

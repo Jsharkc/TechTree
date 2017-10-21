@@ -7,7 +7,9 @@ export default {
     ModifyVisible: false,
     aboutVisible: false,
     add: 'node', // doc、test
-    addModalVisible: false,
+    addNodeModal: false,
+    addDocModal: false,
+    addTestModal: false,
     canBack: false,
     mode: 'quiz', // or learn
   },
@@ -30,7 +32,7 @@ export default {
 
   effects: {
     * logout ({ payload }, { put }) {
-      yield put(routerRedux.push('/login'))
+      yield put(routerRedux.replace('/login'))
     },
 
     * handleModifyAccount ({ payload }, { call, put }) {
@@ -92,7 +94,7 @@ export default {
       return {
         ...state,
         add: 'node',
-        addModalVisible: true
+        addNodeModal: true
       }
     },
 
@@ -100,7 +102,7 @@ export default {
       return {
         ...state,
         add: 'doc',
-        addModalVisible: true
+        addDocModal: true
       }
     },
 
@@ -108,14 +110,28 @@ export default {
       return {
         ...state,
         add: 'test',
-        addModalVisible: true
+        addTestModal: true
       }
     },
 
     hideAddModal (state) {
       return {
         ...state,
-        addModalVisible: false
+        addNodeModal: false
+      }
+    },
+
+    hideDocModal (state) {
+      return {
+        ...state,
+        addDocModal: false
+      }
+    },
+
+    hideTestModal (state) {
+      return {
+        ...state,
+        addTestModal: false
       }
     },
   },
