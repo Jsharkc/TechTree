@@ -54,7 +54,7 @@ func (node *NodeServiceProvider) Update(un *HandleNode) error {
 func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 	var (
 		passNodes, notPassNodes, nodes []Node
-		allUserAddNodes, visualUserAddNodes []UserAddNode
+		allUserAddNodes []UserAddNode
 		nodeMap map[string]*Node
 	)
 
