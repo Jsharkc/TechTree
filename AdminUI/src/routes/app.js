@@ -1,10 +1,12 @@
-import React           from 'react';
-import { connect }     from 'dva';
-import PropTypes       from 'prop-types';
-import config          from '../utils/config';
-import Styles          from './app.less';
-import Header          from '../components/Header/index';
-import Footer          from '../components/Footer/index';
+import React       from 'react';
+import { connect } from 'dva';
+import PropTypes   from 'prop-types';
+import config      from '../utils/config';
+import Styles      from './app.less';
+import Header      from '../components/Header/index';
+import Footer      from '../components/Footer/index';
+import Bread       from '../components/Bread/index';
+import Menus       from '../utils/menu';
 
 function App({ children, location, dispatch, app }) {
   const {
@@ -45,6 +47,7 @@ function App({ children, location, dispatch, app }) {
       <div className={Styles.layout}>
         <div className={Styles.main}>
           <Header {...headerProps} />
+          <Bread menu={Menus} location={location} />
           <div className={Styles.container}>
             <div className={Styles.content}>
               {children}

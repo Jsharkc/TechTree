@@ -22,6 +22,9 @@ export default {
 
     * handleModifyAccount ({ payload }, { call, put }) {
       console.log(payload);
+      yield put({
+        type: 'hideModifyModal'
+      })
     }
   },
 
