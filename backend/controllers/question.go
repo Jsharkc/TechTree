@@ -117,7 +117,7 @@ finish:
 	qc.ServeJSON(true)
 }
 
-func (qc *QuestionController) Update() {
+func (qc *QuestionController) AddPassed() {
 	var (
 		err  error
 		q    models.PassedQuestion
