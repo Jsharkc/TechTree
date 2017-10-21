@@ -21,5 +21,8 @@ const (
 	NodePassed   = 0x12
 	NoseUserAdd  = 0x13
 
+	Agree = 0x20
+	Disagree = 0x21
+
 	SessionUserID = "userid"
 )

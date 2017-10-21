@@ -1,8 +1,8 @@
 package models
 
 import (
-	"time"
 	"errors"
+	"time"
 
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/tidb"
@@ -22,19 +22,26 @@ type User struct {
 }
 
 type UserAddNode struct {
-	ID          string     `json:"id"      gorm:"column:id"    valid:"Required"`
-	PID         string     `json:"pid"     gorm:"column:pid"   valid:"Required"`
-	Title       string     `json:"title"   gorm:"column:title" valid:"Required"`
-	Description string     `json:"desc"    gorm:"column:desc"  valid:"Required"`
+	ID          string `json:"id"      gorm:"column:id"    valid:"Required"`
+	PID         string `json:"pid"     gorm:"column:pid"   valid:"Required"`
+	Title       string `json:"title"   gorm:"column:title" valid:"Required"`
+	Description string `json:"desc"    gorm:"column:desc"  valid:"Required"`
+	Agree       int    `json:"agree"    gorm:"column:agree"  valid:"Required"`
+	Total       int    `json:"total"    gorm:"column:total"  valid:"Required"`
 }
 
 type Vote struct {
-	UID         string     `json:"uid"     gorm:"column:uid"   valid:"Required"`
-	NID         string     `json:"nid"     gorm:"column:pid"   valid:"Required"`
+	UID  string `json:"uid"     gorm:"column:uid"   valid:"Required"`
+	NID  string `json:"nid"     gorm:"column:pid"   valid:"Required"`
+	Kind int    `json:"kind"    gorm:"column:kind"`
 }
 
 func (u User) TableName() string {
 	return "user"
+}
+
+func (u UserAddNode) TableName() string {
+	return "useraddnode"
 }
 
 func (us *UserServiceProvider) Register(u *User) error {
