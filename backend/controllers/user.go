@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/Jsharkc/TechTree/backend/general"
-	"github.com/Jsharkc/TechTree/backend/log"
+	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
 )
