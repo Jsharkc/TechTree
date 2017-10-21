@@ -6,12 +6,9 @@ export default {
   namespace: 'app',
 
   state: {
-    user: {},
-    loginButtonLoading: false,
     menuPopoverVisible: false,
     token: '',
     siderFold: localStorage.getItem('SiderFold') === 'true',
-    darkTheme: localStorage.getItem('DarkTheme') === 'true',
     isNavbar: document.body.clientWidth < 769,
     modalVisible: false
   },
@@ -36,11 +33,9 @@ export default {
     },
 
     * logout ({ payload }, { call, put }) {
-      // 暂时没有登出接口，现在只是清除本地token
       // const data = yield call(logout, parse(payload))
-      localStorage.removeItem('AuthToken')
-      yield put({ type: 'readToken' })
-      yield put(routerRedux.push('/login'))
+      // yield put({ type: 'readToken' })
+      yield put(routerRedux.replace('/login'))
     },
 
     * switchSider ({ payload }, { put }) {
@@ -49,14 +44,8 @@ export default {
       })
     },
 
-    * changeTheme ({ payload }, { put }) {
-      yield put({
-        type: 'handleChangeTheme',
-      })
-    },
-
     * changeNavbar ({ payload }, { put }) {
-      if (document.body.clientWidth < 769) {
+      if (document.body.clientWidth < 768) {
         yield put({ type: 'showNavbar' })
       } else {
         yield put({ type: 'hideNavbar' })
@@ -89,26 +78,11 @@ export default {
       }
     },
 
-    showLoginButtonLoading (state) {
-      return {
-        ...state,
-        loginButtonLoading: true,
-      }
-    },
-
     handleSwitchSider (state) {
       localStorage.setItem('SiderFold', !state.siderFold)
       return {
         ...state,
         siderFold: !state.siderFold,
-      }
-    },
-
-    handleChangeTheme (state) {
-      localStorage.setItem('DarkTheme', !state.darkTheme)
-      return {
-        ...state,
-        darkTheme: !state.darkTheme,
       }
     },
 

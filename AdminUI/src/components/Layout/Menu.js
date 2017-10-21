@@ -43,7 +43,6 @@ import {
 
 const Menus = ({
   siderFold,
-  darkTheme,
   location,
   handleClickNavMenu,
   menu
@@ -141,7 +140,7 @@ const Menus = ({
   return (
     <Menu
       mode={siderFold ? 'vertical' : 'inline'}
-      theme={darkTheme ? 'dark' : 'light'}
+      theme='light'
       onClick={handleClickNavMenu}
       defaultSelectedKeys={defaultSelectedKeys}>
       {menuItems}

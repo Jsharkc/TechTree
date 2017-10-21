@@ -11,9 +11,7 @@ const { Header, Bread, Footer, Sider, Styles } = Layout;
 
 const App = ({ children, location, dispatch, app }) => {
   const {
-    user,
     siderFold,
-    darkTheme,
     isNavbar,
     menuPopoverVisible,
     navOpenKeys,
@@ -22,8 +20,6 @@ const App = ({ children, location, dispatch, app }) => {
 
   const headerProps = {
     menu,
-    user,
-    darkTheme,
     siderFold,
     location,
     isNavbar,
@@ -52,22 +48,26 @@ const App = ({ children, location, dispatch, app }) => {
       dispatch({ type: 'app/switchSider' })
     },
     changeOpenKeys (openKeys) {
-      dispatch({ type: 'app/handleNavOpenKeys', payload: { navOpenKeys: openKeys } })
+      dispatch({
+        type: 'app/handleNavOpenKeys',
+        payload: { navOpenKeys: openKeys
+        }
+      })
     },
   };
 
   const siderProps = {
     menu,
     siderFold,
-    darkTheme,
     location,
     navOpenKeys,
-    changeTheme () {
-      dispatch({ type: 'app/changeTheme' })
-    },
     changeOpenKeys (openKeys) {
       localStorage.setItem('NavOpenKeys', JSON.stringify(openKeys))
-      dispatch({ type: 'app/handleNavOpenKeys', payload: { navOpenKeys: openKeys } })
+      dispatch({
+        type: 'app/handleNavOpenKeys',
+        payload: { navOpenKeys: openKeys
+        }
+      })
     },
   };
 
@@ -91,7 +91,7 @@ const App = ({ children, location, dispatch, app }) => {
         }>
         {
           !isNavbar
-            ? <aside className={classnames(Styles.sider, { [Styles.light]: !darkTheme })}>
+            ? <aside className={classnames(Styles.sider, Styles.light)}>
                 <Sider {...siderProps} />
               </aside>
             : ''

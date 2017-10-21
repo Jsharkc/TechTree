@@ -32,16 +32,11 @@ import PropTypes  from 'prop-types'
 import Styles     from './Layout.less'
 import config     from '../../utils/config'
 import Menus      from './Menu'
-import {
-  Icon,
-  Switch
-}                 from 'antd'
 
-function Sider ({ siderFold, darkTheme, location, changeTheme, menu }) {
+function Sider ({ siderFold, location, menu }) {
   const menusProps = {
     menu,
     siderFold,
-    darkTheme,
     location,
   }
 
@@ -51,14 +46,6 @@ function Sider ({ siderFold, darkTheme, location, changeTheme, menu }) {
         {siderFold ? '' : <span>{config.name}</span>}
       </div>
       <Menus {...menusProps} />
-      {
-        (config.showThemeSwitch && !siderFold)
-          ? <div className={Styles.switchtheme}>
-              <span><Icon type="bulb" />切换主题</span>
-              <Switch onChange={changeTheme} defaultChecked={darkTheme} checkedChildren="黑" unCheckedChildren="白" />
-            </div>
-          : ''
-      }
     </div>
   )
 }

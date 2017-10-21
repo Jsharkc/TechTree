@@ -79,7 +79,6 @@ const Header = ({
   const menusProps = {
     menu,
     siderFold: false,
-    darkTheme: false,
     isNavbar,
     handleClickNavMenu: switchMenuPopover,
     location,
@@ -198,7 +197,6 @@ Header.propTypes = {
   showModal: PropTypes.func,
   adminOK: PropTypes.func,
   menu: PropTypes.array,
-  user: PropTypes.object,
   logout: PropTypes.func,
   switchSider: PropTypes.func,
   siderFold: PropTypes.bool,
