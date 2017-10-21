@@ -7,6 +7,7 @@ import React       from 'react';
 import PropTypes   from 'prop-types';
 import { connect } from 'dva';
 import Styles      from './index.less';
+import Canvas      from './canvas';
 import {
   Button,
   Form,
@@ -32,6 +33,8 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
 
   return (
     <div className={Styles.form}>
+      <Canvas />
+      <span style={{color: 'white', position: 'relative', fontSize: '25px'}}>TechTree</span>
       <Spin spinning={loginLoading} size='large'>
         <form>
           <FormItem hasFeedback>
