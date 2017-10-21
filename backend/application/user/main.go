@@ -10,4 +10,3 @@ func main() {
 	tidb.InitSql()
 	beego.Run()
 }
-
