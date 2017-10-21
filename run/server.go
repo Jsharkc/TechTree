@@ -19,12 +19,12 @@ func rpcListen() {
 	fmt.Println(GNodeConfig.Addrs)
 	l, err := net.Listen("tcp", GNodeConfig.Addrs)
 	if err != nil {
-		log.Logger.Error("net.Listen(\"%s\", \"%s\") error(%v)"+"tcp"+GNodeConfig.Addrs, err)
+		log.Logger.Error("net.Listen(%s, %s) error(%v)"+"tcp"+GNodeConfig.Addrs, err)
 		panic(err)
 	}
 
 	defer func() {
-		log.Logger.Info("listen rpc: \"%s\" close", GNodeConfig.Addrs)
+		log.Logger.Info("listen rpc: %s close", GNodeConfig.Addrs)
 		if err := l.Close(); err != nil {
 			log.Logger.Error("listener.Close() error(%v)", err)
 		}
