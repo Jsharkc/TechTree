@@ -6,10 +6,7 @@
 import React       from 'react';
 import { connect } from 'dva';
 import UserList    from './userList';
-import {
-  Card,
-  Modal,
-}                  from 'antd'
+import { Card }    from 'antd'
 
 const ManageUser = ({ manageUser, dispatch, loading }) => {
   const {
