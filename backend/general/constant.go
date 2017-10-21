@@ -15,6 +15,7 @@ const (
 	ErrUserExists    = 0x2
 	ErrMysql         = 0x3
 	ErrNotFound      = 0x4
+	ErrNotLogin      = 0x5
 
 	NodePassed   = 0x12
 	NodeUserAdd  = 0x13

@@ -62,5 +62,5 @@ CREATE TABLE IF NOT EXISTS `useraddnode` (
 CREATE TABLE IF NOT EXISTS `vote` (
    `uid`      varchar(64) NOT NULL,
    `vid`      varchar(64) NOT NULL,
-   `kind`     tinyint(3)
+   `kind`     tinyint(3)  NOT NULL
 )DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

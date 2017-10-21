@@ -97,3 +97,119 @@ func (uc *UserController) Login() {
 finish:
 	uc.ServeJSON(true)
 }
+
+func (uc *UserController) AddNode() {
+	var (
+		err      error
+		node     models.UserAddNode
+		flag     bool
+	)
+
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &node)
+	if err != nil {
+		log.Logger.Error("User add node json unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&node)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The user add node key "+err.Key+" has err:", err)
+		}
+
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	err = models.UserService.AddNode(&node)
+	if err != nil {
+		log.Logger.Error("User add node err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
+	log.Logger.Info("User add node success!")
+finish:
+	uc.ServeJSON(true)
+}
+
+func (uc *UserController) Vote() {
+	var (
+		err      error
+		vote     models.Vote
+		flag     bool
+	)
+
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &vote)
+	if err != nil {
+		log.Logger.Error("User vote json unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&vote)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The vote key "+err.Key+" has err:", err)
+		}
+
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	err = models.UserService.Vote(&vote)
+	if err != nil {
+		log.Logger.Error("User vote err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
+	log.Logger.Info("User add node success!")
+finish:
+	uc.ServeJSON(true)
+}
+
+func (uc *UserController) QueryVoteExist() {
+	var (
+		err      error
+		vote     models.Vote
+		flag     bool
+	)
+
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &vote)
+	if err != nil {
+		log.Logger.Error("Query vote json unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&vote)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The query vote key "+err.Key+" has err:", err)
+		}
+
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	err = models.UserService.Query(&vote)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			log.Logger.Error("Vote doesn't exist:", err)
+			uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: false}
+			goto finish
+		}
+		log.Logger.Error("User vote err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: true}
+	log.Logger.Info("User add node success!")
+finish:
+	uc.ServeJSON(true)
+}

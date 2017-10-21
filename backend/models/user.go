@@ -45,14 +45,16 @@ func (u UserAddNode) TableName() string {
 	return "useraddnode"
 }
 
+func (v Vote) TableName() string {
+	return "vote"
+}
+
 func (us *UserServiceProvider) Register(u *User) error {
 	var (
 		db  = tidb.Conn
 		tx  = db.Begin()
 		err error
 	)
-
-	err = tx.Create(&u).Error
 
 	defer func() {
 		if err != nil {
@@ -61,6 +63,11 @@ func (us *UserServiceProvider) Register(u *User) error {
 			err = tx.Commit().Error
 		}
 	}()
+
+	err = tx.Create(&u).Error
+	if err != nil {
+		return err
+	}
 
 	hashcode, err := utils.GenerateHash(u.Password)
 	if err != nil {
@@ -91,4 +98,47 @@ func (us *UserServiceProvider) Login(name, pass *string) (string, error) {
 	}
 
 	return u.UserName, nil
+}
+
+func (us *UserServiceProvider) AddNode(n *UserAddNode) error {
+	n.Status = general.Initial
+	n.Agree  = 0
+	n.Total  = 0
+
+	return tidb.Conn.Create(n).Error
+}
+
+func (us *UserServiceProvider) Vote(v *Vote) error {
+	var (
+		db  = tidb.Conn
+		tx  = db.Begin()
+		err error
+	)
+
+	defer func() {
+		if err != nil {
+			err = tx.Rollback().Error
+		} else {
+			err = tx.Commit().Error
+		}
+	}()
+
+	err = tx.Create(&v).Error
+	if err != nil {
+		return err
+	}
+
+	if (v.Kind == general.Agree) {
+		err = tx.Exec("UPDATE useraddnode SET agree = agree+1, total = total+1 where id = ?", v.NID).Error
+	} else {
+		err = tx.Exec("UPDATE useraddnode SET total = total+1 where id = ?", v.NID).Error
+	}
+
+	return err
+}
+
+func (us *UserServiceProvider) Query(v *Vote) error {
+	var vote Vote
+
+	return tidb.Conn.Where("uid = ? and nid = ?", v.UID, v.NID).First(&vote).Error
 }
