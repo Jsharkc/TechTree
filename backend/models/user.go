@@ -26,8 +26,8 @@ type UserAddNode struct {
 	PID         string `json:"pid"     gorm:"column:pid"   valid:"Required"`
 	Title       string `json:"title"   gorm:"column:title" valid:"Required"`
 	Description string `json:"desc"    gorm:"column:desc"  valid:"Required"`
-	Agree       int    `json:"agree"    gorm:"column:agree"  valid:"Required"`
-	Total       int    `json:"total"    gorm:"column:total"  valid:"Required"`
+	Agree       int    `json:"agree"   gorm:"column:agree"  valid:"Required"`
+	Total       int    `json:"total"   gorm:"column:total"  valid:"Required"`
 }
 
 type Vote struct {
