@@ -1,53 +1,104 @@
-import React       from 'react';
-import { connect } from 'dva';
-import PropTypes   from 'prop-types';
-import config      from '../utils/config';
-import Styles      from './app.less';
-import Header      from '../components/Header/index';
-import Footer      from '../components/Footer/index';
-import Bread       from '../components/Bread/index';
-import Menus       from '../utils/menu';
+import React       from 'react'
+import PropTypes   from 'prop-types'
+import { connect } from 'dva'
+import { Layout }  from '../components'
+import classnames  from 'classnames'
+import config      from '../utils/config'
+import menu        from '../utils/menu'
+import '../themes/default.less'
 
-function App({ children, location, dispatch, app }) {
+const { Header, Bread, Footer, Sider, Styles } = Layout;
+
+const App = ({ children, location, dispatch, app }) => {
   const {
-    ModifyVisible,
+    user,
+    siderFold,
+    darkTheme,
+    isNavbar,
+    menuPopoverVisible,
+    navOpenKeys,
+    modalVisible
   } = app;
 
   const headerProps = {
-    visible: ModifyVisible,
-    onCancel () {
-      dispatch({
-        type: 'app/hideModifyModal'
-      })
+    menu,
+    user,
+    darkTheme,
+    siderFold,
+    location,
+    isNavbar,
+    visible: modalVisible,
+    menuPopoverVisible,
+    navOpenKeys,
+    showModal () {
+      dispatch({ type: 'app/showAdminModal' })
     },
-    onModifyAccount (data) {
+    adminOK (data) {
       dispatch({
-        type: 'app/handleModifyAccount',
+        type: 'app/updateAminAccount',
         payload: data
       })
     },
+    onCancel () {
+      dispatch({ type: 'app/hideAdminModal' })
+    },
+    switchMenuPopover () {
+      dispatch({ type: 'app/switchMenuPopver' })
+    },
     logout () {
-      dispatch({
-        type: 'app/logout'
-      })
+      dispatch({ type: 'app/logout' })
     },
-    showModify () {
-      dispatch({
-        type: 'app/showModifyModal'
-      })
+    switchSider () {
+      dispatch({ type: 'app/switchSider' })
     },
-  }
+    changeOpenKeys (openKeys) {
+      dispatch({ type: 'app/handleNavOpenKeys', payload: { navOpenKeys: openKeys } })
+    },
+  };
+
+  const siderProps = {
+    menu,
+    siderFold,
+    darkTheme,
+    location,
+    navOpenKeys,
+    changeTheme () {
+      dispatch({ type: 'app/changeTheme' })
+    },
+    changeOpenKeys (openKeys) {
+      localStorage.setItem('NavOpenKeys', JSON.stringify(openKeys))
+      dispatch({ type: 'app/handleNavOpenKeys', payload: { navOpenKeys: openKeys } })
+    },
+  };
+
+  const breadProps = {
+    menu
+  };
 
   if (config.openPages && config.openPages.indexOf(location.pathname) > -1) {
-    return <div className={Styles.loginPage}>{ children }</div>
+    return <div className={Styles.loginPage}>{children}</div>
   }
 
   return (
     <div>
-      <div className={Styles.layout}>
+      <div
+        className={
+          classnames(
+            Styles.layout,
+            { [Styles.fold]: isNavbar ? false : siderFold },
+            { [Styles.withnavbar]: isNavbar }
+          )
+        }>
+        {
+          !isNavbar
+            ? <aside className={classnames(Styles.sider, { [Styles.light]: !darkTheme })}>
+                <Sider {...siderProps} />
+              </aside>
+            : ''
+        }
         <div className={Styles.main}>
           <Header {...headerProps} />
-          <Bread menu={Menus} location={location} />
+          <Bread {...breadProps} location={location} />
           <div className={Styles.container}>
             <div className={Styles.content}>
               {children}
@@ -58,49 +109,13 @@ function App({ children, location, dispatch, app }) {
       </div>
     </div>
   )
-}
+};
 
-const styles = {
-  infoImg: {
-    background: '#ffffaf',
-    borderRadius: '50%',
-    marginLeft: '10px',
-    fontSize: '30px',
-  },
-
-  name: {
-    fontSize: '25px',
-    marginLeft: '10px'
-  },
-
-  infoSpan: {
-    fontSize: '20px',
-    width: '300px',
-    overflow: 'hidden',
-  },
-
-  subTitle: {
-    width: '80px',
-    fontSize: '20px',
-    marginLeft: '25px'
-  },
-
-  infoDiv: {
-    height: '35px',
-    width: '490px',
-    overflow: 'hidden',
-    margin: '0 0 10px 60px',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-}
-
-App.protoTypes = {
+App.propTypes = {
   children: PropTypes.element.isRequired,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   app: PropTypes.object,
 };
 
-export default connect(({ app, loading }) => ({ app, loading }))(App);
+export default connect(({ app, loading }) => ({ app, loading }))(App)
