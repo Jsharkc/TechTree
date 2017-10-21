@@ -79,9 +79,12 @@ export default {
 
   effects: {
     * clickNode ({ payload }, { select, put }) {
+      const mode = yield select(state => state.app.mode);
+
       yield put(routerRedux.push({
         pathname: '/node',
         query: {
+          mode,
           route: payload
         }
       }))

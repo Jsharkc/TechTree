@@ -28,6 +28,7 @@ const formItemLayout = {
 
 const Header = ({
   visible,
+  mode,
   onCancel,
   canBack,
   onModifyAccount,
@@ -35,6 +36,7 @@ const Header = ({
   goBack,
   showModify,
   showAbout,
+  onChangeMode,
   form: {
     getFieldDecorator,
     validateFields,
@@ -96,9 +98,19 @@ const Header = ({
               onClick={goBack}
             />
           : <div style={{display: 'flex', alignItems: 'center', padding: '0 16px'}}>
-              <RadioGroup defaultValue='quiz'>
-                <RadioButton className={Styles.radioButton} value="quiz">闯关</RadioButton>
-                <RadioButton className={Styles.radioButton} value="learn">学习</RadioButton>
+              <RadioGroup defaultValue={mode} onChange={onChangeMode}>
+                <RadioButton
+                  className={Styles.radioButton}
+                  style={mode === 'quiz' ? {background: '#2EDCE5', color: '#383838'} : {}}
+                  value="quiz">
+                  闯关
+                </RadioButton>
+                <RadioButton
+                  className={Styles.radioButton}
+                  style={mode === 'learn' ? {background: '#2EDCE5', color: '#383838'} : {}}
+                  value="learn">
+                  学习
+                </RadioButton>
               </RadioGroup>
               <Dropdown overlay={menu}>
                 <Button style={{ marginLeft: 8 }}>
@@ -177,6 +189,7 @@ const Header = ({
 
 Header.propTypes = {
   visible: PropTypes.bool,
+  mode: PropTypes.string.isRequired,
   canBack: PropTypes.bool,
   onCancel: PropTypes.func,
   onModifyAccount: PropTypes.func,
@@ -184,6 +197,7 @@ Header.propTypes = {
   goBack: PropTypes.func,
   showModify: PropTypes.func,
   showAbout: PropTypes.func,
+  onChangeMode: PropTypes.func,
   form: PropTypes.object
 }
 

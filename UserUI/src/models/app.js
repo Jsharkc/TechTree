@@ -5,7 +5,9 @@ export default {
 
   state: {
     ModifyVisible: false,
+    aboutVisible: false,
     canBack: false,
+    mode: 'quiz', // or learn
   },
 
   subscriptions: {
@@ -62,5 +64,26 @@ export default {
         canBack: false
       }
     },
+
+    changeMode (state, action) {
+      return {
+        ...state,
+        mode: action.payload
+      }
+    },
+
+    showAbout (state) {
+      return {
+        ...state,
+        aboutVisible: true,
+      }
+    },
+
+    hideAbout (state) {
+      return {
+        ...state,
+        aboutVisible: false,
+      }
+    }
   },
 };
