@@ -12,6 +12,7 @@ const (
 
 	ErrSucceed       = 0x0
 	ErrInvalidParams = 0x1
+	ErrUserExists    = 0x2
 	ErrMysql         = 0x3
 	ErrNotFound      = 0x4
 
