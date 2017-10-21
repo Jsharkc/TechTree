@@ -9,14 +9,35 @@ import Footer          from '../components/Footer/index';
 import {
   Modal,
   Icon,
+  Select,
+  Input
 }                      from 'antd';
+
+const Option = Select.Option;
+const options = [
+  {
+    id: '0',
+    label: 'Go'
+  }, {
+    id: '1',
+    label: '语法'
+  }, {
+    id: '2',
+    label: '框架'
+  }, {
+    id: '3',
+    label: '实例'
+  }
+];
 
 function App({ children, location, dispatch, app }) {
   const {
     ModifyVisible,
     aboutVisible,
+    addModalVisible,
     canBack,
     mode,
+    add,
   } = app;
 
   const headerProps = {
@@ -57,6 +78,21 @@ function App({ children, location, dispatch, app }) {
         type: 'app/changeMode',
         payload: e.target.value
       })
+    },
+    onClickAdd (e) {
+      if (e.key === 'addNode') {
+        dispatch({
+          type: 'app/addNode'
+        })
+      } else if (e.key === 'addDoc') {
+        dispatch({
+          type: 'app/addDoc'
+        })
+      } else {
+        dispatch({
+          type: 'app/addTest'
+        })
+      }
     }
   }
 
@@ -68,6 +104,93 @@ function App({ children, location, dispatch, app }) {
       dispatch({
         type: 'app/hideAbout'
       })
+    }
+  }
+
+  const addModalProps = {
+    title: (
+      <div style={{textAlign: 'center'}}>
+        {
+          add === 'node' ? '添加节点' : add === 'doc' ? '添加文档' : '添加考题'
+        }
+      </div>
+    ),
+    width: '500px',
+    visible: addModalVisible,
+    maskClosable: false,
+    onCancel () {
+      dispatch({
+        type: 'app/hideAddModal'
+      })
+    }
+  }
+
+  const addNodeModal = (
+    <div>
+      <Select
+        showSearch
+        style={{ width: '100%' }}
+        placeholder="选择父节点"
+        optionFilterProp="children"
+        filterOption={(input, option) => option.props.children.indexOf(input) >= 0}>
+        {
+          options.map(node => <Option key={node.id} value={node.id}>{node.label}</Option>)
+        }
+      </Select>
+      <Input
+        style={{marginTop: '30px'}}
+        placeholder='输入节点名'
+      />
+      <Input
+        style={{marginTop: '30px'}}
+        placeholder='输入简介'
+      />
+    </div>
+  )
+
+  const addDocModal = doc => {
+    if (doc === 'test') {
+      return (
+        <div>
+          <Select
+            showSearch
+            style={{ width: '100%' }}
+            placeholder="选择节点"
+            optionFilterProp="children"
+            filterOption={(input, option) => option.props.children.indexOf(input) >= 0}>
+            {
+              options.map(node => <Option key={node.id} value={node.id}>{node.label}</Option>)
+            }
+          </Select>
+          <Input
+            style={{marginTop: '30px'}}
+            placeholder='添加考题'
+            type='textarea'
+            rows={5}
+          />
+        </div>
+      )
+    } else if (doc === 'doc') {
+      return (
+        <div>
+          <Select
+            showSearch
+            style={{ width: '100%' }}
+            placeholder="选择节点"
+            optionFilterProp="children"
+            filterOption={(input, option) => option.props.children.indexOf(input) >= 0}>
+            {
+              options.map(node => <Option key={node.id} value={node.id}>{node.label}</Option>)
+            }
+          </Select>
+          <Input
+            style={{marginTop: '30px'}}
+            placeholder='添加知识点'
+            type='textarea'
+            rows={5}
+          />
+        </div>
+      )
     }
   }
 
@@ -88,6 +211,11 @@ function App({ children, location, dispatch, app }) {
           <Footer />
         </div>
       </div>
+      <Modal {...addModalProps}>
+        {
+          add === 'node' ? addNodeModal : addDocModal(add)
+        }
+      </Modal>
       <Modal {...aboutModalProps}>
         <div style={{height: '80px', display: 'flex', alignItems: 'center'}}>
           <img src={require('../assets/logo.png')} height='60px' width='60px' style={styles.infoImg} />

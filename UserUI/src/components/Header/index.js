@@ -37,6 +37,7 @@ const Header = ({
   showModify,
   showAbout,
   onChangeMode,
+  onClickAdd,
   form: {
     getFieldDecorator,
     validateFields,
@@ -60,10 +61,6 @@ const Header = ({
       onModifyAccount(values);
       resetFields();
     })
-  }
-
-  const onClickAdd = menu => {
-    console.log(menu.key)
   }
 
   const modalProps = {
@@ -198,6 +195,7 @@ Header.propTypes = {
   showModify: PropTypes.func,
   showAbout: PropTypes.func,
   onChangeMode: PropTypes.func,
+  onClickAdd: PropTypes.func,
   form: PropTypes.object
 }
 
