@@ -123,3 +123,43 @@ func (nc *NodeController) Update() {
 finish:
 	nc.ServeJSON(true)
 }
+
+func (nc *NodeController) ListAll() {
+	var (
+		err      error
+		flag     bool
+		nodes    []models.Node
+		username struct {
+			UserName  string `json:"name" valid:"Required; MinSize(6);MaxSize(128)"`
+		}
+	)
+
+	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &username)
+	if err != nil {
+		log.Logger.Error("List all node json unmarshal err:", err)
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&username)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The list node key "+err.Key+" has err:", err)
+		}
+
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	nodes, err = models.NodeService.ListAll(username.UserName)
+	if err != nil {
+		log.Logger.Error("List all node mysql err:", err)
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: nodes}
+	log.Logger.Info("List all node success")
+	finish:
+	nc.ServeJSON(true)
+}
