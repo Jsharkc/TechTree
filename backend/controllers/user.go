@@ -19,7 +19,6 @@ func (uc *UserController) Register() {
 	var (
 		err      error
 		register models.User
-		session = utils.GlobalSessions.SessionStart(uc.Ctx.ResponseWriter, uc.Ctx.Request)
 		flag     bool
 	)
 
@@ -47,7 +46,7 @@ func (uc *UserController) Register() {
 		goto finish
 	}
 
-	session.Set(general.SessionUserID, register.UserName)
+	uc.SetSession(general.SessionUserID, register.UserName)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", register.UserName)
 finish:
@@ -60,7 +59,6 @@ func (uc *UserController) Login() {
 		login   models.User
 		userID  string
 		flag     bool
-		session = utils.GlobalSessions.SessionStart(uc.Ctx.ResponseWriter, uc.Ctx.Request)
 	)
 
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &login)
@@ -93,7 +91,7 @@ func (uc *UserController) Login() {
 		goto finish
 	}
 
-	session.Set(general.SessionUserID, userID)
+	uc.SetSession(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", userID)
 finish:

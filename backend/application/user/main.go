@@ -19,8 +19,11 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+
 	tidb.InitSql()
 	rpc.InitClient()
+
 	go rpc.Clients.Ping("RunRPC.Ping")
+
 	beego.Run()
 }
