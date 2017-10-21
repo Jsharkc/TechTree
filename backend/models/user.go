@@ -67,7 +67,7 @@ func (us *UserServiceProvider) Register(u *User) error {
 	}
 
 	u.Password = string(hashcode)
-	u.Status = general.UserActive
+	u.Status = general.Active
 	u.Created = time.Now()
 
 	return err

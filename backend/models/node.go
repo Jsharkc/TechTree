@@ -39,7 +39,7 @@ func (u PassNode) TableName() string {
 }
 
 func (node *NodeServiceProvider) Add(n *Node) error {
-	n.Status = general.NodeNoActive
+	n.Status = general.Inactive
 	return tidb.Conn.Create(n).Error
 }
 
@@ -75,7 +75,7 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 
 	for index, node := range notPassNodes {
 		if _, ok := nodeMap[node.PID]; ok {
-			notPassNodes[index].Status = general.NodeActive
+			notPassNodes[index].Status = general.Active
 		}
 	}
 
