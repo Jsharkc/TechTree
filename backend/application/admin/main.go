@@ -1,12 +1,26 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
+	"strings"
 
-	_ "github.com/Jsharkc/TechTree/backend/routers/user"
+	_ "github.com/Jsharkc/TechTree/backend/routers/admin"
+	"github.com/astaxie/beego/plugins/cors"
+	"github.com/astaxie/beego"
+	"github.com/Jsharkc/TechTree/backend/tidb"
 )
 
 func main() {
+	//允许CORS
+	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
+		AllowOrigins:     strings.Split(beego.AppConfig.String("cors::hosts"), ","),
+		AllowMethods:     []string{"POST", "GET"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
+
+	tidb.InitSql()
+
 	beego.Run()
 }
 
