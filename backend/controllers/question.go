@@ -15,20 +15,36 @@ type QuestionController struct {
 
 func (qc *QuestionController) GetQuestion() {
 	var (
-		err  error
-		q    []models.Question
-		flag bool
-		num  = 3
+		err    error
+		q      []models.Question
+		flag   bool
+		nid struct{
+			NID string `json:"nid" valid:"Required"`
+			Num int    `json:"num" valid:"Required"`
+		}
 	)
 	user := qc.GetSession(general.SessionUserID).(string)
-	flag = models.NodeService.IsPassed(user)
 
-	if flag {
-		num = 1
-	}
-	q, err = models.QuestionService.GetQuestionByUser(user, num)
+	err = json.Unmarshal(qc.Ctx.Input.RequestBody, &nid)
 	if err != nil {
-		log.Logger.Error("get  question err:", err)
+		log.Logger.Error("Get question json unmarshal err:", err)
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&nid)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The question key "+err.Key+" has err:", err)
+		}
+
+		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	q, err = models.QuestionService.GetQuestionByUser(user, nid.NID, nid.Num)
+	if err != nil {
+		log.Logger.Error("get question err:", err)
 		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
 		goto finish
 	}
@@ -134,79 +150,6 @@ func (qc *QuestionController) Update() {
 
 	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("admin add passed question success")
-finish:
-	qc.ServeJSON(true)
-}
-
-func (qc *QuestionController) UserAddQuestion() {
-	var (
-		err  error
-		q    models.UserAddQues
-		flag bool
-	)
-
-	err = json.Unmarshal(qc.Ctx.Input.RequestBody, &q)
-	if err != nil {
-		log.Logger.Error("UserAddQuestion question json unmarshal err:", err)
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
-		goto finish
-	}
-
-	flag, err = utils.GlobalValid.Valid(&q)
-	if !flag {
-		for _, err := range utils.GlobalValid.Errors {
-			log.Logger.Error("The question key "+err.Key+" has err:", err)
-		}
-
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
-		goto finish
-	}
-
-	err = models.QuestionService.UserAddQuestion(&q)
-	if err != nil {
-		log.Logger.Error("user add question mysql err:", err)
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
-		goto finish
-	}
-
-	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
-	log.Logger.Info("user add question success")
-finish:
-	qc.ServeJSON(true)
-}
-
-func (qc *QuestionController) CheckUserAdd() {
-	var (
-		err  error
-		q    models.UserAddQues
-		flag bool
-	)
-
-	err = json.Unmarshal(qc.Ctx.Input.RequestBody, &q)
-	if err != nil {
-		log.Logger.Error("Check user add question json unmarshal err:", err)
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
-		goto finish
-	}
-
-	flag, err = utils.GlobalValid.Valid(&q)
-	if !flag {
-		for _, err := range utils.GlobalValid.Errors {
-			log.Logger.Error("The Question key "+err.Key+" has err:", err)
-		}
-
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
-		goto finish
-	}
-
-	err = models.QuestionService.Update(&q.ID)
-	if err != nil {
-		log.Logger.Error("update user add question mysql err:", err)
-		qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
-		goto finish
-	}
-
-	qc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 finish:
 	qc.ServeJSON(true)
 }

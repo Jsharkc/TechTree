@@ -223,3 +223,41 @@ func (nc *NodeController) DelPass() {
 	finish:
 	nc.ServeJSON(true)
 }
+
+func (nc *NodeController) IsPassed() {
+	var (
+		err      error
+		pnode    models.PassNode
+		flag     bool
+		ok       bool
+	)
+
+	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &pnode)
+	if err != nil {
+		log.Logger.Error("Is pass node json unmarshal err:", err)
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	flag, err = utils.GlobalValid.Valid(&pnode)
+	if !flag {
+		for _, err := range utils.GlobalValid.Errors {
+			log.Logger.Error("The node key "+err.Key+" has err:", err)
+		}
+
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	err, ok = models.NodeService.IsPassed(pnode.UID, pnode.NID)
+	if err != nil {
+		log.Logger.Error("Is pass node mysql err:", err)
+		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}
+		goto finish
+	}
+
+	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ok}
+	log.Logger.Info("Is passed node %b", ok)
+finish:
+	nc.ServeJSON(true)
+}

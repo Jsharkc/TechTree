@@ -13,7 +13,7 @@ type NodeServiceProvider struct {
 var NodeService *NodeServiceProvider = &NodeServiceProvider{}
 
 type Node struct {
-	ID      string     `json:"id"     gorm:"column:id"    valid:"Required"`
+	ID      string     `json:"id"     gorm:"column:id"`
 	PID     string     `json:"pid"    gorm:"column:pid"   valid:"Required"`
 	Title   string     `json:"title"  gorm:"column:title" valid:"Required"`
 	Intro   string     `json:"intro"  gorm:"column:intro" valid:"Required"`
@@ -39,10 +39,18 @@ func (u PassNode) TableName() string {
 	return "passnode"
 }
 
-func (nsp *NodeServiceProvider) IsPassed(uid string) bool {
+func (nsp *NodeServiceProvider) IsPassed(uid, nid string) (bool, error) {
 	var p PassNode
-	tidb.Conn.Model(&Node{}).Where("uid = ?", uid).Scan(&p)
-	return !(p.NID == "")
+	err := tidb.Conn.Model(&PassNode{}).Where("uid = ? AND nid = ?", uid, nid).Scan(&p).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return false, nil
+		} else {
+			return false, err
+		}
+	}
+
+	return true, nil
 }
 
 func (node *NodeServiceProvider) AdminAddNode(n *Node) error {

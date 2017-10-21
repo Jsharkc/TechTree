@@ -24,5 +24,8 @@ const (
 	Agree    = 0x21
 	DisAgree = 0x22
 
+	AddedTypeQues = 0x31
+	AddedTypeKnow = 0x32
+
 	SessionUserID = "userid"
 )

@@ -8,6 +8,7 @@ import (
 	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/utils"
 	"github.com/satori/go.uuid"
+	"github.com/jinzhu/gorm"
 )
 
 type UserServiceProvider struct {
@@ -25,6 +26,7 @@ type User struct {
 type UserAddNode struct {
 	ID          string `json:"id"      gorm:"column:id"`
 	PID         string `json:"pid"     gorm:"column:pid"    valid:"Required"`
+	UID         string `json:"uid"     gorm:"column:uid"    valid:"Required"`
 	Title       string `json:"title"   gorm:"column:title"  valid:"Required"`
 	Description string `json:"desc"    gorm:"column:desc"   valid:"Required"`
 	Agree       int    `json:"agree"   gorm:"column:agree"`
@@ -139,8 +141,17 @@ func (us *UserServiceProvider) Vote(v *Vote) error {
 	return err
 }
 
-func (us *UserServiceProvider) Query(v *Vote) error {
+func (us *UserServiceProvider) IsVoted(v *Vote) (bool, error) {
 	var vote Vote
 
-	return tidb.Conn.Where("uid = ? and nid = ?", v.UID, v.NID).First(&vote).Error
+	err := tidb.Conn.Model(&Vote{}).Where("uid = ? and nid = ?", v.UID, v.NID).First(&vote).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return false, nil
+		} else {
+			return false, err
+		}
+	}
+
+	return true, nil
 }
