@@ -41,9 +41,7 @@ function App({ children, location, dispatch, app }) {
   }
 
   if (config.openPages && config.openPages.indexOf(location.pathname) > -1) {
-    return (
-      <div className={ Styles.loginPage }>{ children }</div>
-    );
+    return <div>{ children }</div>
   }
 
   return (

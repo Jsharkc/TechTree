@@ -8,12 +8,16 @@ import { Card }    from 'antd';
 import { connect } from 'dva';
 import TreeGraph   from './treeGraph';
 
-const Home = () => {
+const Home = ({ home, loading }) => {
+  const { source } = home;
+
   return (
     <Card>
-      <TreeGraph/>
+      <TreeGraph source={source} />
     </Card>
   )
 }
 
-export default Home
+export default connect(
+  ({ home, loading }) => ({ home, loading: loading.models.home })
+)(Home)

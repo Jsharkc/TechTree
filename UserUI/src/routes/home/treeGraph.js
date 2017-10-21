@@ -8,74 +8,10 @@ import React from 'react';
 class TreeGraph extends React.Component {
   constructor (props) {
     super(props);
-
-    this.state = {
-      source: {
-        label: 'Go',
-        color: '#86D560',
-        children: [{
-          label: '语法',
-          route: 'grammar',
-          children: [{
-            label: 'Graph',
-            route: 'graph',
-          }, {
-            label: 'Net',
-            route: 'net',
-          }, {
-            label: 'Tree',
-            route: 'tree',
-          }]
-        }, {
-          label: '框架',
-          route: 'framework',
-          children: [{
-            label: 'Canvas',
-            route: 'canvas',
-          }, {
-            label: 'Handler',
-            route: 'handler'
-          }, {
-            label: 'Layout',
-            route: 'layout',
-            children: [{
-              label: 'a',
-              route: 'a'
-            }, {
-              label: 'b',
-              route: 'b',
-              children: [{
-                label: 'a',
-                route: 'a'
-              }, {
-                label: 'b',
-                route: 'b'
-              }]
-            }]
-          }]
-        }, {
-          label: '实例',
-          route: 'sample',
-          color: '#86D560',
-          children: [{
-            label: 'Matrix',
-            route: 'matrix',
-            color: '#86D560'
-          }, {
-            label: 'Color',
-            route: 'color',
-          }, {
-            label: 'Util',
-            route: 'util',
-            size: 30
-          }]
-        }]
-      }
-    }
   }
 
   componentDidMount () {
-    const { source } = this.state;
+    const { source } = this.props;
 
     // 配置G6图
     let layoutCfg = {
@@ -92,14 +28,18 @@ class TreeGraph extends React.Component {
       height: 600,
       layoutCfg,
       forceFit: true,
-      fitView: 'autoZoom',
-      grid: {
-        cell: 10
-      },
+      fitView: 'cc',
       layoutFn: G6.Layout.CompactBoxTree,
     });
+    tree.tooltip({
+      split: '=>'
+    });
+    tree.node().tooltip(obj => obj.route ? [['点击跳转', obj.label]] : '');
     tree.source(source); // 传入数据
     tree.edge().shape('smooth');
+    tree.on('click', function(ev){ // 双击跳转路由
+      console.log(ev.item.get('model'));
+    });
     tree.render();
   }
 
