@@ -29,10 +29,10 @@ func (qu *KnowledgeServiceProvider) GetKnowledgeByNode(nid string) ([]Knowledge,
 	return k, db.Error
 }
 
-func (qu *KnowledgeServiceProvider) AdminAddKnowledge(Knowledge *Knowledge) error {
-	Knowledge.ID = uuid.NewV4().String()
-	Knowledge.Status = general.Active
-	return tidb.Conn.Model(&Knowledge{}).Create(Knowledge).Error
+func (qu *KnowledgeServiceProvider) AdminAddKnowledge(Know *Knowledge) error {
+	Know.ID = uuid.NewV4().String()
+	Know.Status = general.Active
+	return tidb.Conn.Model(&Knowledge{}).Create(Know).Error
 }
 
 func (qu *KnowledgeServiceProvider) DeleteKnowledge(kid string) error {

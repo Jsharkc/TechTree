@@ -249,7 +249,7 @@ func (nc *NodeController) IsPassed() {
 		goto finish
 	}
 
-	err, ok = models.NodeService.IsPassed(pnode.UID, pnode.NID)
+	ok, err = models.NodeService.IsPassed(pnode.UID, pnode.NID)
 	if err != nil {
 		log.Logger.Error("Is pass node mysql err:", err)
 		nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrMysql}

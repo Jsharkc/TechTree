@@ -54,3 +54,9 @@ func (qu *QuestionServiceProvider) DeleteQuestion(qid string) error {
 func (p *QuestionServiceProvider)AddPassed(pq *PassedQuestion) error {
 	return tidb.Conn.Model(&PassedQuestion{}).Create(pq).Error
 }
+
+func (p *QuestionServiceProvider) GetTestPath(qid string) (string,error) {
+	var q Question
+	err := tidb.Conn.Model(&Question{}).Where("id = ?").Scan(&q)
+	return q.TestPath, err.Error
+}

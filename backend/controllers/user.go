@@ -244,3 +244,50 @@ func (uc *UserController) DoExercise() {
 finish:
 	uc.ServeJSON(true)
 }
+
+type Test struct {
+	Code string  `json:"code" gorm:"column:code" valid:"Required"`
+    Qid  string  `json:"qid"     gorm:"column:qid"   valid:"Required"`
+}
+
+func (uc *UserController)  DoTest() {
+	var (
+		err  error
+		t Test
+		a    common.Args
+		out  string
+		path string
+	)
+
+	user := uc.GetSession(general.SessionUserID).(string)
+	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &t)
+	if err != nil {
+		log.Logger.Error("test unmarshal err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	path , err =models.QuestionService.GetTestPath(t.Qid)
+	if err != nil {
+		log.Logger.Error("Get TestPath err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+
+	a = common.Args{
+		Kind: common.Test,
+		Code: t.Code,
+		UID:  user,
+		TestCode: path,
+	}
+
+	out, err = rpc.Run(a)
+	if err != nil {
+		log.Logger.Error("user run code err:", err)
+		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
+		goto finish
+	}
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
+finish:
+	uc.ServeJSON(true)
+}
