@@ -80,7 +80,7 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 		return nil, err
 	}
 
-	if err == gorm.ErrRecordNotFound {
+	if len(passNodes) == 0 {
 		noPassFlag = true
 	}
 
