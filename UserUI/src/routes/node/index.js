@@ -8,27 +8,43 @@ import { connect } from 'dva'
 import Styles      from './index.less'
 import {
   Button,
+  Input
 }                  from 'antd'
 
-const string = `Rotondeis an experiment into the idea of self-hosted social media feeds.\
-              As described by its own specification, it is "platform agnostic", meaning that it doesn't need to be tied to a specific website, service or API.\
-              You can host the data anywhere, and distribute it in any fashion you like, as long as the structure of the data is correct.\n\
-              @neauoire has opened a new codebase that brings the Rotonde concept to Beaker Browser, sa p2p web-browser built on top of the dat protocol.\
-              The code in this repository is still very bleeding edge, and requires manual installation. This guide will demonstrate setup of Rotonde within Beaker,\
-              allowing you to create new posts and follow other Rotonde users.`
+const { TextArea } = Input;
 
 const Node = ({ node, dispatch }) => {
   const {
-    route
+    title,
+    quizID,
+    quiz,
+    prepCode,
+    code,
+    result,
   } = node
+
+  const CodeInputProps = {
+    autoSize: {minRows: 18},
+    onChange (e) {
+      dispatch({
+        type: 'node/onChangeCode',
+        payload: e.target.value
+      })
+    },
+    defaultValue: prepCode,
+    placeholder: '输入完整代码',
+    className: Styles.textarea
+  }
 
   return (
     <div className={Styles.page}>
       <div className={Styles.left}>
         <span style={{fontSize: '15px'}}>
-          <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '18px'}}>{route}</div>
+          <div style={{textAlign: 'center', fontWeight: 'bold', fontSize: '18px'}}>{title}</div>
           {
-            string.split('\n').map((p, index) => <div key={index}><p style={{textIndent: '25px'}}>{p}</p><br /></div>)
+            quiz && quiz.indexOf('\n') >= 0
+              ? quiz.split('\n').map((p, index) => <div key={index}><p style={{textIndent: '25px'}}>{p}</p><br /></div>)
+              : <div><p style={{textIndent: '25px'}}>{quiz}</p><br /></div>
           }
         </span>
         <div style={{textAlign: 'center'}}>
@@ -38,10 +54,10 @@ const Node = ({ node, dispatch }) => {
         </div>
       </div>
       <div className={Styles.right}>
-        <textarea autoFocus={true} placeholder="输入代码" className={Styles.textarea} />
+        <TextArea {...CodeInputProps} />
         <div className={Styles.result}>
           { '测试结果' }
-          <Button className={Styles.run}>
+          <Button className={Styles.run} onClick={() => dispatch({ type: 'node/run' })}>
             运行
           </Button>
         </div>

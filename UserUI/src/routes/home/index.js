@@ -11,10 +11,10 @@ import TreeGraph   from './treeGraph';
 const Home = ({ home, dispatch }) => {
   const { source } = home;
 
-  const onRoute  = (route) => {
+  const onRoute  = (node) => {
     dispatch({
       type: 'home/clickNode',
-      payload: route
+      payload: node
     })
   }
 

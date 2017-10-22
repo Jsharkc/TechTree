@@ -36,6 +36,7 @@ export default {
           // } else {
           //   yield put(routerRedux.push('/home'))
           // }
+
           yield put(routerRedux.push('/home'));
           message.info('登录成功！');
         } else {

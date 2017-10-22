@@ -100,18 +100,18 @@ const Header = ({
                   className={Styles.radioButton}
                   style={mode === 'quiz' ? {background: '#2EDCE5', color: '#383838'} : {}}
                   value="quiz">
-                  闯关
+                  新G能Get
                 </RadioButton>
                 <RadioButton
                   className={Styles.radioButton}
                   style={mode === 'learn' ? {background: '#2EDCE5', color: '#383838'} : {}}
                   value="learn">
-                  学习
+                  G力觉醒
                 </RadioButton>
               </RadioGroup>
               <Dropdown overlay={menu}>
                 <Button style={{ marginLeft: 8 }}>
-                  添加 <Icon type="down" />
+                  开疆拓G <Icon type="down" />
                 </Button>
               </Dropdown>
             </div>

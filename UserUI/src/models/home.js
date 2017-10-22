@@ -15,7 +15,10 @@ export default {
 
   state: {
     nodes: [],
-    source: {}
+    source: {},
+    nodeTitle: '',
+    nodeID: '',
+    nodeStatus: '',
   },
 
   subscriptions: {
@@ -50,17 +53,16 @@ export default {
       }
     },
 
-    * clickNode ({ payload }, { select, put }) {
-      const mode = yield select(state => state.app.mode);
-
+    * clickNode ({ payload }, { put }) {
       yield put(routerRedux.push({
         pathname: '/node',
         query: {
-          mode,
-          route: payload
+          title: payload.label,
+          id: payload.id,
+          status: payload.status,
         }
       }))
-    }
+    },
   },
 
   reducers: {
@@ -71,5 +73,14 @@ export default {
         nodes: action.payload.nodes,
       };
     },
+
+    setNodeInfo (state, action) {
+      return {
+        ...state,
+        nodeTitle: action.payload.nodeTitle,
+        nodeID: action.payload.nodeID,
+        nodeStatus: action.payload.nodeStatus,
+      }
+    }
   },
 };

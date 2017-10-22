@@ -37,13 +37,14 @@ class TreeGraph extends React.Component {
     tree.tooltip({
       split: ': '
     });
-    tree.node().tooltip('intro');
+    tree.node().tooltip(obj => [['简介', obj.intro]]);
+    tree.node().color(obj => obj.status == '16' ? '#2EC7C9' : obj.status == '17' ? '#ccc' : '');
     tree.source(source); // 传入数据
     tree.edge().shape('smooth');
     tree.on('dblclick', function(ev){ // 双击跳转路由
       let item = ev.item;
-      if(tree.isNode(item) && item.get('model').label){
-        onRoute(item.get('model').label)
+      if(tree.isNode(item) && item.get('model').status != '17'){
+        onRoute(item.get('model'))
       }
     });
     tree.render();

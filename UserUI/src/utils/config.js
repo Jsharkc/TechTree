@@ -17,6 +17,10 @@ module.exports = {
     },
     app: {
       addNode: '/node/add',
+    },
+    node: {
+      query: '/question/list',
+      run: '/user/run'
     }
   }
 }
