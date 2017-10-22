@@ -5,6 +5,7 @@ import { baseURL } from './config'
 
 axios.defaults.baseURL = baseURL;
 axios.defaults.timeout = 15000;
+axios.defaults.withCredentials = true;
 
 const fetch = (options) => {
   let {

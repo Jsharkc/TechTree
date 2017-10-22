@@ -101,7 +101,10 @@ function App({ children, location, dispatch, app }) {
       })
     },
     onAddNode (data) {
-      console.log(data)
+      dispatch({
+        type: 'app/onAddNode',
+        payload: data
+      })
     }
   }
 
@@ -225,7 +228,7 @@ const styles = {
     overflow: 'hidden',
     margin: '0 0 10px 60px',
     display: 'flex',
-    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center'
   }
 }

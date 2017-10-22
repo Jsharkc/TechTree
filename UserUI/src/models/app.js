@@ -1,4 +1,6 @@
-import { routerRedux } from 'dva/router'
+import { routerRedux } from 'dva/router';
+import { message }     from 'antd';
+import { AddNode }     from '../services/app';
 
 export default {
   namespace: 'app',
@@ -37,7 +39,21 @@ export default {
 
     * handleModifyAccount ({ payload }, { call, put }) {
       console.log(payload);
-    }
+    },
+
+    * onAddNode ({ payload }, { call, put }) {
+      const res = yield call(AddNode, payload);
+
+      if (!res.status) {
+        message.success('添加请求申请成功，等待后续筛选！')
+      } else {
+        message.warning('提交申请失败，请稍后重试！')
+      }
+
+      yield put({
+        type: 'hideAddModal'
+      })
+    },
   },
 
   reducers: {

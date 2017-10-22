@@ -11,6 +11,12 @@ module.exports = {
     login: {
       login: '/login',
       register: '/user/register'
+    },
+    home: {
+      getNodes: '/node/list',
+    },
+    app: {
+      addNode: '/node/add',
     }
   }
 }

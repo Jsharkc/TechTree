@@ -32,8 +32,8 @@ const register = (
     validateFieldsAndScroll((errors, values) => {
       if (errors) { return }
 
-      resetFields();
       onRegister(values);
+      resetFields();
     })
   }
 
