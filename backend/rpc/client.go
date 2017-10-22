@@ -24,7 +24,6 @@ func InitClient() {
 		ops = append(ops, op)
 	}
 
-
 	Clients = rpc.Dials(ops)
 }
 

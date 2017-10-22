@@ -22,11 +22,11 @@ type UserAdded struct {
 }
 
 type UpdateUserAdded struct {
-	ID          string `json:"id"       gorm:"column:id"        valid:"Required"`
-	Status      int    `json:"status"   gorm:"column:status"`
+	ID     string `json:"id"       gorm:"column:id"        valid:"Required"`
+	Status int    `json:"status"   gorm:"column:status"`
 }
 
-func (ua UserAdded)TableName() string {
+func (ua UserAdded) TableName() string {
 	return "useradded"
 }
 

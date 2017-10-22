@@ -17,8 +17,8 @@ const (
 	ErrNotFound      = 0x4
 	ErrNotLogin      = 0x5
 
-	NodePassed   = 0x12
-	NodeUserAdd  = 0x13
+	NodePassed  = 0x12
+	NodeUserAdd = 0x13
 
 	Initial  = 0x20
 	Agree    = 0x21

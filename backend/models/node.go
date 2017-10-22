@@ -1,10 +1,10 @@
 package models
 
 import (
-	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/general"
-	"github.com/satori/go.uuid"
+	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/jinzhu/gorm"
+	"github.com/satori/go.uuid"
 )
 
 type NodeServiceProvider struct {
@@ -13,22 +13,22 @@ type NodeServiceProvider struct {
 var NodeService *NodeServiceProvider = &NodeServiceProvider{}
 
 type Node struct {
-	ID      string     `json:"id"     gorm:"column:id"`
-	PID     string     `json:"pid"    gorm:"column:pid"   valid:"Required"`
-	Title   string     `json:"label"  gorm:"column:title" valid:"Required"`
-	Intro   string     `json:"intro"  gorm:"column:intro" valid:"Required"`
-	Status  int32      `json:"status" gorm:"column:status"`
+	ID     string `json:"id"     gorm:"column:id"`
+	PID    string `json:"pid"    gorm:"column:pid"   valid:"Required"`
+	Title  string `json:"label"  gorm:"column:title" valid:"Required"`
+	Intro  string `json:"intro"  gorm:"column:intro" valid:"Required"`
+	Status int32  `json:"status" gorm:"column:status"`
 }
 
 type HandleNode struct {
-	ID      string     `json:"id"    gorm:"column:id"    valid:"Required"`
-	Title   string     `json:"title" gorm:"column:title"`
-	Intro   string     `json:"intro" gorm:"column:intro"`
+	ID    string `json:"id"    gorm:"column:id"    valid:"Required"`
+	Title string `json:"title" gorm:"column:title"`
+	Intro string `json:"intro" gorm:"column:intro"`
 }
 
 type PassNode struct {
-	UID         string     `json:"uid"     gorm:"column:uid"   valid:"Required"`
-	NID         string     `json:"nid"     gorm:"column:pid"   valid:"Required"`
+	UID string `json:"uid"     gorm:"column:uid"   valid:"Required"`
+	NID string `json:"nid"     gorm:"column:pid"   valid:"Required"`
 }
 
 func (u Node) TableName() string {
@@ -70,9 +70,9 @@ func (node *NodeServiceProvider) Update(un *HandleNode) error {
 func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 	var (
 		passNodes, notPassNodes, nodes []Node
-		allUserAddNodes []UserAddNode
-		nodeMap map[string]*Node
-		noPassFlag  bool
+		allUserAddNodes                []UserAddNode
+		nodeMap                        map[string]*Node
+		noPassFlag                     bool
 	)
 
 	err := tidb.Conn.Raw("select * from node where id in (select nid from passnode where uid = ?)", uid).Scan(&passNodes).Error
@@ -117,10 +117,10 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 		for _, node := range allUserAddNodes {
 			if _, ok := nodeMap[node.PID]; ok {
 				newNode := Node{
-					ID: node.ID,
-					PID: node.PID,
-					Title: node.Title,
-					Intro: node.Description,
+					ID:     node.ID,
+					PID:    node.PID,
+					Title:  node.Title,
+					Intro:  node.Description,
 					Status: general.NodeUserAdd,
 				}
 

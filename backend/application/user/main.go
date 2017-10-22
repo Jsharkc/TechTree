@@ -1,14 +1,14 @@
 package main
 
 import (
-	"strings"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/plugins/cors"
+	"strings"
 
-	_ "github.com/Jsharkc/TechTree/backend/routers/user"
-	"github.com/Jsharkc/TechTree/backend/tidb"
-	"github.com/Jsharkc/TechTree/backend/rpc"
 	"github.com/Jsharkc/TechTree/backend/filters"
+	_ "github.com/Jsharkc/TechTree/backend/routers/user"
+	"github.com/Jsharkc/TechTree/backend/rpc"
+	"github.com/Jsharkc/TechTree/backend/tidb"
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 
 	go rpc.Clients.Ping("RunRPC.Ping")
 
-	beego.InsertFilter("/*",beego.BeforeRouter, filters.LoginFilter)
+	beego.InsertFilter("/*", beego.BeforeRouter, filters.LoginFilter)
 
 	beego.Run()
 }

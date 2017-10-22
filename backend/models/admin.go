@@ -27,8 +27,8 @@ func (a Admin) TableName() string {
 
 func (as *AdminServiceProvider) Add(a *Admin) error {
 	var (
-		db = tidb.Conn
-		tx = db.Begin()
+		db  = tidb.Conn
+		tx  = db.Begin()
 		err error
 	)
 
@@ -59,7 +59,7 @@ func (as *AdminServiceProvider) Add(a *Admin) error {
 
 func (as *AdminServiceProvider) Login(name, pass *string) (string, error) {
 	var (
-		a Admin
+		a   Admin
 		err error
 	)
 

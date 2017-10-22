@@ -17,10 +17,10 @@ type QuestionController struct {
 // GetQuestion - user get question
 func (qc *QuestionController) GetQuestion() {
 	var (
-		err    error
-		q      []models.Question
-		flag   bool
-		nid struct{
+		err  error
+		q    []models.Question
+		flag bool
+		nid  struct {
 			NID string `json:"nid" valid:"Required"`
 			Num int    `json:"" valid:"Required"`
 		}
@@ -97,8 +97,8 @@ finish:
 // Delete - admin delete question
 func (qc *QuestionController) Delete() {
 	var (
-		err      error
-		id        string
+		err error
+		id  string
 	)
 
 	err = json.Unmarshal(qc.Ctx.Input.RequestBody, &id)
@@ -162,8 +162,8 @@ finish:
 // List - list all question for admin
 func (qc *QuestionController) List() {
 	var (
-		err    error
-		q      []models.Question
+		err error
+		q   []models.Question
 	)
 
 	q, err = models.QuestionService.List()

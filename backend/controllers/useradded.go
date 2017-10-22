@@ -105,8 +105,8 @@ finish:
 
 func (uac *UserAddedController) ListQues() {
 	var (
-		err    error
-		ua      []models.UserAdded
+		err error
+		ua  []models.UserAdded
 	)
 
 	ua, err = models.UserAddedService.ListQues()
@@ -129,8 +129,8 @@ finish:
 
 func (uac *UserAddedController) ListKnow() {
 	var (
-		err    error
-		ua      []models.UserAdded
+		err error
+		ua  []models.UserAdded
 	)
 
 	ua, err = models.UserAddedService.ListKnow()

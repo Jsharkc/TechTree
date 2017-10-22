@@ -17,10 +17,10 @@ type KnowledgeController struct {
 // GetKnowledge - Get knowledge by node ID
 func (kc *KnowledgeController) GetKnowledge() {
 	var (
-		err    error
-		k      []models.Knowledge
-		flag   bool
-		nid struct{
+		err  error
+		k    []models.Knowledge
+		flag bool
+		nid  struct {
 			NID string `json:"nid" valid:"Required"`
 		}
 	)
@@ -88,15 +88,15 @@ func (kc *KnowledgeController) AdminAddKnowledge() {
 
 	kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Add question success")
-	finish:
+finish:
 	kc.ServeJSON(true)
 }
 
 // Delete - admin delete knowledge by node ID
 func (kc *KnowledgeController) Delete() {
 	var (
-		err      error
-		id       string
+		err error
+		id  string
 	)
 
 	err = json.Unmarshal(kc.Ctx.Input.RequestBody, &id)
@@ -115,15 +115,15 @@ func (kc *KnowledgeController) Delete() {
 
 	kc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Delete question success")
-	finish:
+finish:
 	kc.ServeJSON(true)
 }
 
 // List - list all knowledge for admin
 func (kc *KnowledgeController) List() {
 	var (
-		err    error
-		k      []models.Knowledge
+		err error
+		k   []models.Knowledge
 	)
 
 	k, err = models.KnowledgeService.List()

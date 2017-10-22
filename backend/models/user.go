@@ -7,8 +7,8 @@ import (
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/utils"
-	"github.com/satori/go.uuid"
 	"github.com/jinzhu/gorm"
+	"github.com/satori/go.uuid"
 )
 
 type UserServiceProvider struct {
@@ -106,8 +106,8 @@ func (us *UserServiceProvider) Login(name, pass *string) (string, error) {
 func (us *UserServiceProvider) UserAddNode(n *UserAddNode) error {
 	n.ID = uuid.NewV4().String()
 	n.Status = general.Initial
-	n.Agree  = 0
-	n.Total  = 0
+	n.Agree = 0
+	n.Total = 0
 
 	return tidb.Conn.Create(n).Error
 }
@@ -132,7 +132,7 @@ func (us *UserServiceProvider) Vote(v *Vote) error {
 		return err
 	}
 
-	if (v.Kind == general.Agree) {
+	if v.Kind == general.Agree {
 		err = tx.Exec("UPDATE useraddnode SET agree = agree+1, total = total+1 where id = ?", v.NID).Error
 	} else {
 		err = tx.Exec("UPDATE useraddnode SET total = total+1 where id = ?", v.NID).Error

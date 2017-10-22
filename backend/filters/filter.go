@@ -1,8 +1,8 @@
 package filters
 
 import (
-	"github.com/astaxie/beego/context"
 	"github.com/Jsharkc/TechTree/backend/general"
+	"github.com/astaxie/beego/context"
 )
 
 var filterUrl map[string]struct{}
@@ -24,4 +24,3 @@ func init() {
 	filterUrl["/user/register"] = struct{}{}
 	filterUrl["/admin/add"] = struct{}{}
 }
-

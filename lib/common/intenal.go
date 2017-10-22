@@ -2,7 +2,7 @@ package common
 
 const (
 	Exexcise = 0
-	Test = 1
+	Test     = 1
 )
 
 type Args struct {

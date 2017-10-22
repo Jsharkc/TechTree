@@ -8,7 +8,7 @@ import (
 
 func init() {
 	// Admin
-    beego.Router("/login", &controllers.AdminController{}, "post:Login")
+	beego.Router("/login", &controllers.AdminController{}, "post:Login")
 	beego.Router("/admin/add", &controllers.AdminController{}, "post:Add")
 
 	// Node

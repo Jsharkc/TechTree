@@ -252,14 +252,14 @@ finish:
 }
 
 type Test struct {
-	Code string  `json:"code" gorm:"column:code" valid:"Required"`
-    Qid  string  `json:"qid"     gorm:"column:qid"   valid:"Required"`
+	Code string `json:"code" gorm:"column:code" valid:"Required"`
+	Qid  string `json:"qid"     gorm:"column:qid"   valid:"Required"`
 }
 
-func (uc *UserController)  DoTest() {
+func (uc *UserController) DoTest() {
 	var (
 		err  error
-		t Test
+		t    Test
 		a    common.Args
 		out  string
 		path string
@@ -273,7 +273,7 @@ func (uc *UserController)  DoTest() {
 		goto finish
 	}
 
-	path , err =models.QuestionService.GetTestPath(t.Qid)
+	path, err = models.QuestionService.GetTestPath(t.Qid)
 	if err != nil {
 		log.Logger.Error("Get TestPath err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
@@ -281,9 +281,9 @@ func (uc *UserController)  DoTest() {
 	}
 
 	a = common.Args{
-		Kind: common.Test,
-		Code: t.Code,
-		UID:  user,
+		Kind:     common.Test,
+		Code:     t.Code,
+		UID:      user,
 		TestCode: path,
 	}
 

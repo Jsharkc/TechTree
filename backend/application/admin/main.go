@@ -3,11 +3,11 @@ package main
 import (
 	"strings"
 
-	_ "github.com/Jsharkc/TechTree/backend/routers/admin"
-	"github.com/astaxie/beego/plugins/cors"
-	"github.com/astaxie/beego"
-	"github.com/Jsharkc/TechTree/backend/tidb"
 	"github.com/Jsharkc/TechTree/backend/filters"
+	_ "github.com/Jsharkc/TechTree/backend/routers/admin"
+	"github.com/Jsharkc/TechTree/backend/tidb"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/plugins/cors"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	beego.InsertFilter("/*",beego.BeforeRouter, filters.LoginFilter)
+	beego.InsertFilter("/*", beego.BeforeRouter, filters.LoginFilter)
 
 	tidb.InitSql()
 

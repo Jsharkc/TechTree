@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 
 	"github.com/Jsharkc/TechTree/backend/general"
-	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/Jsharkc/TechTree/backend/models"
 	"github.com/Jsharkc/TechTree/backend/utils"
+	"github.com/Jsharkc/TechTree/lib/log"
 	"github.com/jinzhu/gorm"
 )
 
@@ -17,9 +17,9 @@ type NodeController struct {
 // Add - admin add node
 func (nc *NodeController) Add() {
 	var (
-		err      error
-		node     models.Node
-		flag     bool
+		err  error
+		node models.Node
+		flag bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &node)
@@ -55,9 +55,9 @@ finish:
 // Delete - admin delete node by node ID
 func (nc *NodeController) Delete() {
 	var (
-		err      error
-		hnode    models.HandleNode
-		flag     bool
+		err   error
+		hnode models.HandleNode
+		flag  bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &hnode)
@@ -93,9 +93,9 @@ finish:
 // Update - admin update node content
 func (nc *NodeController) Update() {
 	var (
-		err      error
-		hnode    models.HandleNode
-		flag     bool
+		err   error
+		hnode models.HandleNode
+		flag  bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &hnode)
@@ -131,8 +131,8 @@ finish:
 // ListAll - list all node with status for user
 func (nc *NodeController) ListAll() {
 	var (
-		err      error
-		nodes    []models.Node
+		err   error
+		nodes []models.Node
 	)
 
 	uid := nc.GetSession(general.SessionUserID).(string)
@@ -158,9 +158,9 @@ finish:
 // AddPass - user add himself passed node
 func (nc *NodeController) AddPass() {
 	var (
-		err      error
-		pnode     models.PassNode
-		flag     bool
+		err   error
+		pnode models.PassNode
+		flag  bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &pnode)
@@ -196,9 +196,9 @@ finish:
 // DelPass - admin delete user passed node
 func (nc *NodeController) DelPass() {
 	var (
-		err      error
-		pnode    models.PassNode
-		flag     bool
+		err   error
+		pnode models.PassNode
+		flag  bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &pnode)
@@ -227,17 +227,17 @@ func (nc *NodeController) DelPass() {
 
 	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Del pass node success")
-	finish:
+finish:
 	nc.ServeJSON(true)
 }
 
 // IsPassed - judge if he pass this node
 func (nc *NodeController) IsPassed() {
 	var (
-		err      error
-		pnode    models.PassNode
-		flag     bool
-		ok       bool
+		err   error
+		pnode models.PassNode
+		flag  bool
+		ok    bool
 	)
 
 	err = json.Unmarshal(nc.Ctx.Input.RequestBody, &pnode)
@@ -273,8 +273,8 @@ finish:
 // AdminListAll - list all node for admin
 func (nc *NodeController) AdminListAll() {
 	var (
-		err      error
-		nodes    []models.Node
+		err   error
+		nodes []models.Node
 	)
 
 	nodes, err = models.NodeService.AdminListAll()

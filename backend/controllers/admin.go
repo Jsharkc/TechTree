@@ -18,9 +18,9 @@ type AdminController struct {
 // Add - admin login
 func (ac *AdminController) Add() {
 	var (
-		err      error
-		admin    models.Admin
-		flag     bool
+		err   error
+		admin models.Admin
+		flag  bool
 	)
 
 	err = json.Unmarshal(ac.Ctx.Input.RequestBody, &admin)
