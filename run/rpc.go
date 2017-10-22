@@ -15,8 +15,8 @@ import (
 type RunRpc struct{}
 
 const (
-	Success = "success"
-	Failed  = "failed"
+	Success = "Success!"
+	Failed  = "Failed!"
 )
 
 func (r *RunRpc) Run(args common.Args, reply *string) error {
