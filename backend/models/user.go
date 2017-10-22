@@ -26,7 +26,7 @@ type User struct {
 type UserAddNode struct {
 	ID          string `json:"id"      gorm:"column:id"`
 	PID         string `json:"pid"     gorm:"column:pid"    valid:"Required"`
-	UID         string `json:"uid"     gorm:"column:uid"    valid:"Required"`
+	UID         string `json:"uid"     gorm:"column:uid"`
 	Title       string `json:"title"   gorm:"column:title"  valid:"Required"`
 	Description string `json:"desci"   gorm:"column:desci"  valid:"Required"`
 	Agree       int    `json:"agree"   gorm:"column:agree"`

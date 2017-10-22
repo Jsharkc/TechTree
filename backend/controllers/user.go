@@ -52,7 +52,7 @@ func (uc *UserController) Register() {
 	uc.SetSession(general.SessionUserID, register.UserName)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", register.UserName)
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
@@ -98,7 +98,7 @@ func (uc *UserController) Login() {
 	uc.SetSession(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", userID)
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
@@ -110,6 +110,7 @@ func (uc *UserController) AddNode() {
 		flag bool
 	)
 
+	userid := uc.GetSession(general.SessionUserID).(string)
 	err = json.Unmarshal(uc.Ctx.Input.RequestBody, &node)
 	if err != nil {
 		log.Logger.Error("User add node json unmarshal err:", err)
@@ -127,6 +128,8 @@ func (uc *UserController) AddNode() {
 		goto finish
 	}
 
+	node.UID = userid
+
 	err = models.UserService.UserAddNode(&node)
 	if err != nil {
 		log.Logger.Error("User add node err:", err)
@@ -136,7 +139,7 @@ func (uc *UserController) AddNode() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
@@ -174,7 +177,7 @@ func (uc *UserController) Vote() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
@@ -213,7 +216,7 @@ func (uc *UserController) QueryVoteExist() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ok}
 	log.Logger.Info("User vote success!")
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
@@ -247,19 +250,19 @@ func (uc *UserController) DoExercise() {
 		goto finish
 	}
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
 
 type Test struct {
-	Code string `json:"code" gorm:"column:code" valid:"Required"`
-	Qid  string `json:"qid"     gorm:"column:qid"   valid:"Required"`
+	Code string  `json:"code" gorm:"column:code" valid:"Required"`
+	Qid  string  `json:"qid"     gorm:"column:qid"   valid:"Required"`
 }
 
-func (uc *UserController) DoTest() {
+func (uc *UserController)  DoTest() {
 	var (
 		err  error
-		t    Test
+		t Test
 		a    common.Args
 		out  string
 		path string
@@ -273,7 +276,7 @@ func (uc *UserController) DoTest() {
 		goto finish
 	}
 
-	path, err = models.QuestionService.GetTestPath(t.Qid)
+	path , err =models.QuestionService.GetTestPath(t.Qid)
 	if err != nil {
 		log.Logger.Error("Get TestPath err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
@@ -281,9 +284,9 @@ func (uc *UserController) DoTest() {
 	}
 
 	a = common.Args{
-		Kind:     common.Test,
-		Code:     t.Code,
-		UID:      user,
+		Kind: common.Test,
+		Code: t.Code,
+		UID:  user,
 		TestCode: path,
 	}
 
@@ -294,6 +297,6 @@ func (uc *UserController) DoTest() {
 		goto finish
 	}
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
-finish:
+	finish:
 	uc.ServeJSON(true)
 }
