@@ -1,6 +1,6 @@
-import { routerRedux } from 'dva/router';
-import { message }     from 'antd';
-import { AddNode }     from '../services/app';
+import { routerRedux }     from 'dva/router';
+import { message }         from 'antd';
+import { AddNode, AddDoc } from '../services/app';
 
 export default {
   namespace: 'app',
@@ -52,6 +52,40 @@ export default {
 
       yield put({
         type: 'hideAddModal'
+      })
+    },
+
+    * onAddDoc ({ payload }, { call, put }) {
+      console.log(payload)
+      let params = payload;
+      params.type = 50;
+      const res = yield call(AddDoc, params);
+
+      if (!res.status) {
+        message.success('添加请求申请成功，等待后续筛选！')
+      } else {
+        message.warning('提交申请失败，请稍后重试！')
+      }
+
+      yield put({
+        type: 'hideDocModal'
+      })
+    },
+
+    * onAddTest ({ payload }, { call, put }) {
+      console.log(payload)
+      let params = payload;
+      params.type = 49;
+      const res = yield call(AddDoc, params);
+
+      if (!res.status) {
+        message.success('添加请求申请成功，等待后续筛选！')
+      } else {
+        message.warning('提交申请失败，请稍后重试！')
+      }
+
+      yield put({
+        type: 'hideTestModal'
       })
     },
   },

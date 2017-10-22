@@ -116,7 +116,10 @@ function App({ children, location, dispatch, app }) {
       })
     },
     onAddDoc (data) {
-      console.log(data)
+      dispatch({
+        type: 'app/onAddDoc',
+        payload: data
+      })
     }
   }
 
@@ -128,7 +131,10 @@ function App({ children, location, dispatch, app }) {
       })
     },
     onAddTest (data) {
-      console.log(data)
+      dispatch({
+        type: 'app/onAddTest',
+        payload: data
+      })
     }
   }
 

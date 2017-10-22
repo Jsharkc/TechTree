@@ -68,7 +68,7 @@ const AddTest = ({
       <Form layout="horizontal">
         <FormItem label='节点' hasFeedback {...formItemLayout}>
           {
-            getFieldDecorator('node', {
+            getFieldDecorator('nid', {
               initialValue: '',
               rules: [
                 {
@@ -91,7 +91,7 @@ const AddTest = ({
         </FormItem>
         <FormItem label='考题' hasFeedback {...formItemLayout}>
           {
-            getFieldDecorator('exam', {
+            getFieldDecorator('desci', {
               initialValue: '',
               rules: [
                 {

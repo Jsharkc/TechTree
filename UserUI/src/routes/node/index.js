@@ -24,7 +24,7 @@ const Node = ({ node, dispatch }) => {
   } = node
 
   const CodeInputProps = {
-    autoSize: {minRows: 18},
+    rows: 18,
     onChange (e) {
       dispatch({
         type: 'node/onChangeCode',

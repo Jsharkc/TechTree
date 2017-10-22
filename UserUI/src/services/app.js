@@ -6,7 +6,7 @@
 import request from '../utils/request';
 import config  from '../utils/config';
 
-const { addNode } = config.api.app;
+const { addNode, addDoc } = config.api.app;
 
 export async function AddNode (params) {
   return request({
@@ -16,3 +16,10 @@ export async function AddNode (params) {
   })
 }
 
+export async function AddDoc (params) {
+  return request({
+    url: addDoc,
+    method: 'post',
+    data: params
+  })
+}

@@ -68,7 +68,7 @@ const AddDoc = ({
       <Form layout="horizontal">
         <FormItem label='节点' hasFeedback {...formItemLayout}>
           {
-            getFieldDecorator('node', {
+            getFieldDecorator('nid', {
               initialValue: '',
               rules: [
                 {
@@ -91,7 +91,7 @@ const AddDoc = ({
         </FormItem>
         <FormItem label='知识点' hasFeedback {...formItemLayout}>
           {
-            getFieldDecorator('doc', {
+            getFieldDecorator('desci', {
               initialValue: '',
               rules: [
                 {

@@ -101,7 +101,7 @@ const AddNode = ({
                   min: 1,
                 }
               ]
-            })(<Input placeholder='节点介绍' />)
+            })(<Input type="textarea" rows={5} placeholder='节点介绍' />)
           }
         </FormItem>
       </Form>

@@ -4,7 +4,7 @@
  */
 
 module.exports = {
-  baseURL: 'http://172.27.13.196:8080',
+  baseURL: 'http://172.27.11.172:8080',
   openPages: ['/login'],
   footerText: '2017 © Copyright by SmartestEE',
   api: {
@@ -17,10 +17,12 @@ module.exports = {
     },
     app: {
       addNode: '/node/add',
+      addDoc: '/knowledge/list'
     },
     node: {
       query: '/question/list',
-      run: '/user/run'
+      run: '/user/run',
+      vote: '/node/vote/add'
     }
   }
 }
