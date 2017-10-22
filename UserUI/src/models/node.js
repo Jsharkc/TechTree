@@ -15,6 +15,7 @@ export default {
     quiz: '',
     prepCode: '',
     data: [],
+    index: 0,
     num: 0,
     points: 0,
     result: '',
@@ -75,6 +76,23 @@ export default {
         type: 'setResult',
         payload: res.data
       })
+    },
+
+    * nextQuiz ({ payload }, { select, call, put }) {
+      let index = yield select(state => state.node.index);
+      let data = yield select(state => state.node.data);
+
+      index += 1;
+
+      yield put({
+        type: 'next',
+        payload: {
+          quizID: data[index].id,
+          quiz: data[index].desci,
+          prepCode: data[index].prepcode,
+          index
+        }
+      })
     }
   },
 
@@ -101,6 +119,16 @@ export default {
       return {
         ...state,
         result: action.payload
+      }
+    },
+
+    next (state, action) {
+      return {
+        ...state,
+        quizID: action.payload.quizID,
+        quiz: action.payload.quiz,
+        prepCode: action.payload.prepCode,
+        index: action.payload.index
       }
     }
   }

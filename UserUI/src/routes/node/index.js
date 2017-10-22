@@ -18,6 +18,7 @@ const Node = ({ node, dispatch }) => {
     title,
     quizID,
     quiz,
+    data,
     prepCode,
     code,
     result,
@@ -48,7 +49,7 @@ const Node = ({ node, dispatch }) => {
           }
         </span>
         <div style={{textAlign: 'center'}}>
-          <Button>
+          <Button onClick={() => dispatch({ type: 'node/nextQuiz' })}>
             下一题
           </Button>
         </div>
