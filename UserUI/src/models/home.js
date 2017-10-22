@@ -4,80 +4,52 @@
  */
 
 import { routerRedux } from 'dva/router';
+import { message }     from 'antd';
+import { arrayToTree } from '../utils/index';
+import {
+  GetNodes,
+}                      from '../services/home';
 
 export default {
   namespace: 'home',
 
   state: {
-    source: {
-      label: 'Go',
-      color: '#86D560',
-      children: [{
-        label: '语法',
-        route: 'grammar',
-        children: [{
-          label: 'Graph',
-          route: 'graph',
-        }, {
-          label: 'Net',
-          route: 'net',
-        }, {
-          label: 'Tree',
-          route: 'tree',
-        }]
-      }, {
-        label: '框架',
-        route: 'framework',
-        children: [{
-          label: 'Canvas',
-          route: 'canvas',
-        }, {
-          label: 'Handler',
-          route: 'handler'
-        }, {
-          label: 'Layout',
-          route: 'layout',
-          children: [{
-            label: 'a',
-            route: 'a'
-          }, {
-            label: 'b',
-            route: 'b',
-            children: [{
-              label: 'a',
-              route: 'a'
-            }, {
-              label: 'b',
-              route: 'b'
-            }]
-          }]
-        }]
-      }, {
-        label: '实例',
-        route: 'sample',
-        color: '#86D560',
-        children: [{
-          label: 'Matrix',
-          route: 'matrix',
-          color: '#86D560'
-        }, {
-          label: 'Color',
-          route: 'color',
-        }, {
-          label: 'Util',
-          route: 'util',
-          size: 30
-        }]
-      }]
-    }
+    nodes: [],
+    source: {}
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {  // eslint-disable-line
+    setup({ dispatch, history }) {
+      history.listen(location => {
+        if (location.pathname === '/home' || location.pathname === '/') {
+          dispatch({
+            type: 'query',
+            payload: location.query,
+          })
+        }
+      })
     },
   },
 
   effects: {
+    * query ({ payload }, { call, put }) {
+      const res = yield call(GetNodes, {});
+
+      if (!res.status) {
+        let array = res.data || [];
+
+        yield put({
+          type: 'setSource',
+          payload: {
+            source: arrayToTree(array)[0],
+            nodes: array
+          }
+        })
+      } else {
+        message.warn('获取节点失败')
+      }
+    },
+
     * clickNode ({ payload }, { select, put }) {
       const mode = yield select(state => state.app.mode);
 
@@ -92,8 +64,12 @@ export default {
   },
 
   reducers: {
-    save(state, action) {
-      return { ...state, ...action.payload };
+    setSource (state, action) {
+      return {
+        ...state,
+        source: action.payload.source,
+        nodes: action.payload.nodes,
+      };
     },
   },
 };

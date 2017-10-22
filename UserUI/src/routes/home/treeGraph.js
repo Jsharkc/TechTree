@@ -5,6 +5,8 @@
 
 import React from 'react';
 
+var tree;
+
 class TreeGraph extends React.Component {
   constructor (props) {
     super(props);
@@ -23,27 +25,37 @@ class TreeGraph extends React.Component {
     layoutCfg.getHGap = function (d) {
       return 6
     };
-    var tree = new G6.Tree({ // 创建图形，各项配置见https://antv.alipay.com/g6/api/graph.html#fitview-string-object
+    tree = new G6.Tree({ // 创建图形，各项配置见https://antv.alipay.com/g6/api/graph.html#fitview-string-object
       id: 'tree', // 绑定标签id
       height: 600,
       layoutCfg,
       forceFit: true,
       fitView: 'cc',
+      animate: true,
       layoutFn: G6.Layout.CompactBoxTree,
     });
     tree.tooltip({
-      split: '=>'
+      split: ': '
     });
-    tree.node().tooltip(obj => obj.route ? [['双击跳转', obj.label]] : '');
+    tree.node().tooltip('intro');
     tree.source(source); // 传入数据
     tree.edge().shape('smooth');
     tree.on('dblclick', function(ev){ // 双击跳转路由
       let item = ev.item;
-      if(tree.isNode(item) && item.get('model').route){
-        onRoute(item.get('model').route)
+      if(tree.isNode(item) && item.get('model').label){
+        onRoute(item.get('model').label)
       }
     });
     tree.render();
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.source !== this.props.source) {
+      const { source } = this.props;
+
+      tree.changeData(source);
+      tree.autoZoom();
+    }
   }
 
   render () {

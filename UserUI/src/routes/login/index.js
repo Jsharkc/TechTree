@@ -26,7 +26,6 @@ const Login = ({ login, dispatch, form: { getFieldDecorator, validateFieldsAndSc
   function handleOk () {
     validateFieldsAndScroll((errors, values) => {
       if (errors) { return }
-      console.log(values)
 
       dispatch({
         type: 'login/login',
