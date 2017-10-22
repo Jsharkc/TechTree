@@ -32,7 +32,7 @@ const Node = ({ node, dispatch }) => {
         payload: e.target.value
       })
     },
-    defaultValue: prepCode,
+    // defaultValue: prepCode,
     placeholder: '输入完整代码',
     className: Styles.textarea
   }

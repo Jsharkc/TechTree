@@ -205,7 +205,7 @@ function App({ children, location, dispatch, app }) {
 
 const styles = {
   infoImg: {
-    background: '#ffffaf',
+    background: '#efefef',
     borderRadius: '50%',
     marginLeft: '10px',
     fontSize: '30px',
