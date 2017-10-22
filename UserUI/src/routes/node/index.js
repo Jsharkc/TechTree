@@ -56,7 +56,7 @@ const Node = ({ node, dispatch }) => {
       <div className={Styles.right}>
         <TextArea {...CodeInputProps} />
         <div className={Styles.result}>
-          { '测试结果' }
+          { result || '测试结果' }
           <Button className={Styles.run} onClick={() => dispatch({ type: 'node/run' })}>
             运行
           </Button>

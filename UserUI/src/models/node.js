@@ -71,7 +71,10 @@ export default {
 
       const res = yield call(Run, { qid, code })
 
-      console.log(res)
+      yield put({
+        type: 'setResult',
+        payload: res.data
+      })
     }
   },
 
@@ -91,6 +94,13 @@ export default {
       return {
         ...state,
         code: action.payload
+      }
+    },
+
+    setResult (state, action) {
+      return {
+        ...state,
+        result: action.payload
       }
     }
   }
