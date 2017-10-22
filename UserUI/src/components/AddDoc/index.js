@@ -4,6 +4,7 @@
  */
 
 import React     from 'react';
+import { connect } from 'dva';
 import PropTypes from 'prop-types';
 import {
   Form,
@@ -18,23 +19,9 @@ const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 }
 };
-const options = [
-  {
-    id: '0',
-    label: 'Go'
-  }, {
-    id: '1',
-    label: '语法'
-  }, {
-    id: '2',
-    label: '框架'
-  }, {
-    id: '3',
-    label: '实例'
-  }
-];
 
 const AddDoc = ({
+  home,
   visible,
   onCancel,
   onAddDoc,
@@ -44,6 +31,8 @@ const AddDoc = ({
     resetFields,
   },
 }) => {
+  const { nodes } = home;
+
   const handleOK = () => {
     validateFieldsAndScroll((errors, values) => {
       if (errors) { return }
@@ -83,7 +72,7 @@ const AddDoc = ({
                 optionFilterProp="children"
                 filterOption={(input, option) => option.props.children.indexOf(input) >= 0}>
                 {
-                  options.map(node => <Option key={node.id} value={node.id}>{node.label}</Option>)
+                  nodes.map(node => <Option key={node.id} value={node.id}>{node.label}</Option>)
                 }
               </Select>
             )
@@ -120,4 +109,4 @@ AddDoc.protoTypes = {
   form: PropTypes.object,
 }
 
-export default Form.create()(AddDoc)
+export default connect(({ home }) => ({ home }))(Form.create()(AddDoc))
