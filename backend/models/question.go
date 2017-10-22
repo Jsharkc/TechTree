@@ -37,7 +37,7 @@ func (pq PassedQuestion) TableName() string {
 
 func (qu *QuestionServiceProvider) GetQuestionByUser(user, nid string, num int) ([]Question, error) {
 	var q []Question
-	db := tidb.Conn.Raw("SELECT * FROM question WHERE status = ? ANd nid = ? AND id NOT IN (SELECT qid FROM passquestion WHERE uid = ? AND nid = ?)", general.Active, nid, user, nid).Limit(num).Scan(&q)
+	db := tidb.Conn.Raw("SELECT * FROM question WHERE status = ? ANd nid = ? AND id NOT IN (SELECT qid FROM passquestion WHERE uid = ? AND nid = ?) limit ?", general.Active, nid, user, nid, num).Scan(&q)
 	return q, db.Error
 }
 

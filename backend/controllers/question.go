@@ -22,7 +22,7 @@ func (qc *QuestionController) GetQuestion() {
 		flag bool
 		nid  struct {
 			NID string `json:"nid" valid:"Required"`
-			Num int    `json:"" valid:"Required"`
+			Num int    `json:"num" valid:"Required"`
 		}
 	)
 	user := qc.GetSession(general.SessionUserID).(string)
@@ -34,7 +34,7 @@ func (qc *QuestionController) GetQuestion() {
 		goto finish
 	}
 
-	flag, err = utils.GlobalValid.Valid(&q)
+	flag, err = utils.GlobalValid.Valid(&nid)
 	if !flag {
 		for _, err := range utils.GlobalValid.Errors {
 			log.Logger.Error("The question key "+err.Key+" has err:", err)
