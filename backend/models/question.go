@@ -57,7 +57,7 @@ func (p *QuestionServiceProvider) AddPassed(pq *PassedQuestion) error {
 
 func (p *QuestionServiceProvider) GetTestPath(qid string) (string, error) {
 	var q Question
-	err := tidb.Conn.Model(&Question{}).Where("id = ?").Scan(&q)
+	err := tidb.Conn.Model(&Question{}).Where("id = ?", qid).Scan(&q)
 	return q.TestPath, err.Error
 }
 

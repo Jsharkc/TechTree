@@ -50,7 +50,7 @@ func (r *RunRpc) Run(args common.Args, reply *string) error {
 	te, err := run.CombinedOutput()
 	if err != nil {
 		log.Logger.Error("", err)
-		*reply = ""
+		*reply = string(te)
 		return err
 	}
 

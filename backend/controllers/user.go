@@ -7,10 +7,10 @@ import (
 
 	"github.com/Jsharkc/TechTree/backend/general"
 	"github.com/Jsharkc/TechTree/backend/models"
-	"github.com/Jsharkc/TechTree/backend/rpc"
 	"github.com/Jsharkc/TechTree/backend/utils"
 	"github.com/Jsharkc/TechTree/lib/common"
 	"github.com/Jsharkc/TechTree/lib/log"
+	"github.com/Jsharkc/TechTree/lib/rpc"
 )
 
 type UserController struct {
@@ -52,7 +52,7 @@ func (uc *UserController) Register() {
 	uc.SetSession(general.SessionUserID, register.UserName)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", register.UserName)
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
@@ -98,7 +98,7 @@ func (uc *UserController) Login() {
 	uc.SetSession(general.SessionUserID, userID)
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("Login: User ID:%s", userID)
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
@@ -139,7 +139,7 @@ func (uc *UserController) AddNode() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
@@ -177,7 +177,7 @@ func (uc *UserController) Vote() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed}
 	log.Logger.Info("User add node success!")
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
@@ -216,7 +216,7 @@ func (uc *UserController) QueryVoteExist() {
 
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: ok}
 	log.Logger.Info("User vote success!")
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
@@ -227,6 +227,7 @@ func (uc *UserController) DoExercise() {
 		code string
 		a    common.Args
 		out  string
+		c    *rpc.Client
 	)
 
 	user := uc.GetSession(general.SessionUserID).(string)
@@ -243,29 +244,35 @@ func (uc *UserController) DoExercise() {
 		UID:  user,
 	}
 
-	out, err = rpc.Run(a)
+	c = rpc.Dial(rpc.Options{
+		"tcp",
+		"127.0.0.1:1236",
+	})
+
+	err = c.Call("RunRpc.Run", a, &out)
 	if err != nil {
 		log.Logger.Error("user run code err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}
 	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
-	finish:
+finish:
 	uc.ServeJSON(true)
 }
 
 type Test struct {
-	Code string  `json:"code" gorm:"column:code" valid:"Required"`
-	Qid  string  `json:"qid"     gorm:"column:qid"   valid:"Required"`
+	Code string `json:"code" gorm:"column:code" valid:"Required"`
+	Qid  string `json:"qid"     gorm:"column:qid"   valid:"Required"`
 }
 
-func (uc *UserController)  DoTest() {
+func (uc *UserController) DoTest() {
 	var (
 		err  error
-		t Test
+		t    Test
 		a    common.Args
-		out  string
 		path string
+		c    *rpc.Client
+		s    string
 	)
 
 	user := uc.GetSession(general.SessionUserID).(string)
@@ -276,7 +283,7 @@ func (uc *UserController)  DoTest() {
 		goto finish
 	}
 
-	path , err =models.QuestionService.GetTestPath(t.Qid)
+	path, err = models.QuestionService.GetTestPath(t.Qid)
 	if err != nil {
 		log.Logger.Error("Get TestPath err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
@@ -284,19 +291,24 @@ func (uc *UserController)  DoTest() {
 	}
 
 	a = common.Args{
-		Kind: common.Test,
-		Code: t.Code,
-		UID:  user,
+		Kind:     common.Test,
+		Code:     t.Code,
+		UID:      user,
 		TestCode: path,
 	}
 
-	out, err = rpc.Run(a)
+	c = rpc.Dial(rpc.Options{
+		"tcp",
+		"127.0.0.1:1236",
+	})
+
+	err = c.Call("RunRpc.Run", a, &s)
 	if err != nil {
 		log.Logger.Error("user run code err:", err)
 		uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrInvalidParams}
 		goto finish
 	}
-	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: out}
-	finish:
+	uc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: s}
+finish:
 	uc.ServeJSON(true)
 }
