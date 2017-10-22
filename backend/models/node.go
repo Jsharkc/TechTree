@@ -15,7 +15,7 @@ var NodeService *NodeServiceProvider = &NodeServiceProvider{}
 type Node struct {
 	ID      string     `json:"id"     gorm:"column:id"`
 	PID     string     `json:"pid"    gorm:"column:pid"   valid:"Required"`
-	Title   string     `json:"title"  gorm:"column:title" valid:"Required"`
+	Title   string     `json:"label"  gorm:"column:title" valid:"Required"`
 	Intro   string     `json:"intro"  gorm:"column:intro" valid:"Required"`
 	Status  int32      `json:"status" gorm:"column:status"`
 }
@@ -72,11 +72,16 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 		passNodes, notPassNodes, nodes []Node
 		allUserAddNodes []UserAddNode
 		nodeMap map[string]*Node
+		noPassFlag  bool
 	)
 
 	err := tidb.Conn.Raw("select * from node where id in (select nid from passnode where uid = ?)", uid).Scan(&passNodes).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
+	}
+
+	if err == gorm.ErrRecordNotFound {
+		noPassFlag = true
 	}
 
 	for index, node := range passNodes {
@@ -97,22 +102,30 @@ func (node *NodeServiceProvider) ListAll(uid string) ([]Node, error) {
 
 	nodes = append(passNodes, notPassNodes...)
 
-	err = tidb.Conn.Find(&allUserAddNodes).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
-	}
-
-	for _, node := range allUserAddNodes {
-		if _, ok := nodeMap[node.PID]; ok {
-			newNode := Node{
-				ID: node.ID,
-				PID: node.PID,
-				Title: node.Title,
-				Intro: node.Description,
-				Status: general.NodeUserAdd,
+	if noPassFlag {
+		for index, node := range nodes {
+			if node.ID == node.PID {
+				nodes[index].Status = general.Active
 			}
+		}
+	} else {
+		err = tidb.Conn.Find(&allUserAddNodes).Error
+		if err != nil && err != gorm.ErrRecordNotFound {
+			return nil, err
+		}
 
-			nodes = append(nodes, newNode)
+		for _, node := range allUserAddNodes {
+			if _, ok := nodeMap[node.PID]; ok {
+				newNode := Node{
+					ID: node.ID,
+					PID: node.PID,
+					Title: node.Title,
+					Intro: node.Description,
+					Status: general.NodeUserAdd,
+				}
+
+				nodes = append(nodes, newNode)
+			}
 		}
 	}
 

@@ -14,6 +14,7 @@ type UserAddedController struct {
 	BaseController
 }
 
+// UserAdded - user added question or knowledge
 func (uac *UserAddedController) UserAdded() {
 	var (
 		err  error

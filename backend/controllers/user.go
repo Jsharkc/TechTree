@@ -102,7 +102,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
-// AddNode - 
+// AddNode - user added node
 func (uc *UserController) AddNode() {
 	var (
 		err  error
@@ -140,6 +140,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
+// Vote - user vote
 func (uc *UserController) Vote() {
 	var (
 		err  error
@@ -177,6 +178,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
+// QueryVoteExist - query vote exist
 func (uc *UserController) QueryVoteExist() {
 	var (
 		err  error
@@ -215,6 +217,7 @@ finish:
 	uc.ServeJSON(true)
 }
 
+// DoExercise -
 func (uc *UserController) DoExercise() {
 	var (
 		err  error

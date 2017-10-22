@@ -151,7 +151,7 @@ func (nc *NodeController) ListAll() {
 
 	nc.Data["json"] = map[string]interface{}{general.RespKeyStatus: general.ErrSucceed, general.RespKeyData: nodes}
 	log.Logger.Info("List all node success")
-	finish:
+finish:
 	nc.ServeJSON(true)
 }
 
