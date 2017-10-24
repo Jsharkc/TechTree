@@ -4,10 +4,10 @@
  */
 
 module.exports = {
-  baseURL: 'http://172.27.11.172:8080',
+  baseURL: 'http://172.27.11.172:8080', // 请求链接
   openPages: ['/login'],
   footerText: '2017 © Copyright by TechCat',
-  api: {
+  api: { // 请求路径
     login: {
       login: '/login',
       register: '/user/register'
