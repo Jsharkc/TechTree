@@ -6,7 +6,7 @@
 module.exports = {
   baseURL: 'http://172.27.11.172:8080',
   openPages: ['/login'],
-  footerText: '2017 © Copyright by SmartestEE',
+  footerText: '2017 © Copyright by TechCat',
   api: {
     login: {
       login: '/login',
